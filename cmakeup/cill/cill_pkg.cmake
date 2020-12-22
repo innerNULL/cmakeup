@@ -8,14 +8,15 @@ if(${CMAKE_VERSION} VERSION_LESS 3.14)
     include(add_FetchContent_MakeAvailable.cmake)
 endif()
 
-
-#set(CILL_GIT_TAG master)
+set(FETCHCONTENT_QUIET FALSE)
+set(CILL_GIT_TAG "")
 set(CILL_GIT_URL https://github.com/innerNULL/cill.git)
 
 FetchContent_Declare(
     cill  
     GIT_REPOSITORY ${CILL_GIT_URL} 
-    GIT_TAG ${SPDLOG_GIT_TAG}
+    GIT_TAG ${CILL_GIT_TAG} 
+    GIT_PROGRESS TRUE 
 )
 
 #FetchContent_MakeAvailable(cill)
