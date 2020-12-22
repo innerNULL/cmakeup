@@ -23,5 +23,7 @@ if (NOT json_POPULATED)
     FetchContent_Populate(json)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
     MESSAGE(STATUS "json_pkg_root_path = ${json_SOURCE_DIR}")
+    MESSAGE(NOTICE 
+        "You Needs Add `target_link_libraries(\$\{your_executable_file\} PRIVATE nlohmann_json)` in You Root CMakeLists.txt.")
 endif ()
 
