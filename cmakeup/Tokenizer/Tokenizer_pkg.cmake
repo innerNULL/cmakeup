@@ -17,7 +17,8 @@ FetchContent_Declare(
   GIT_REPOSITORY ${TARGET_GIT_URL}
   GIT_TAG ${YARGET_GIT_TAG} 
   GIT_PROGRESS TRUE
-  PATCH_COMMAND rm -rf ./build && mkdir build && cd build && cmake ../ -DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c && make -j12
+  #PATCH_COMMAND rm -rf ./build && mkdir build && cd build && cmake ../ -DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c && make -j12
+  PATCH_COMMAND mkdir -p build && cd build && cmake ../ -DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c && make -j8
 )
 
 if (UNIX) 
@@ -38,7 +39,9 @@ if (NOT tokenizer_POPULATED)
   MESSAGE(STATUS "tokenizer_src_root_path = ${tokenizer_SOURCE_DIR}")
   MESSAGE(STATUS "tokenizer_build_root_path = ${tokenizer_SOURCE_DIR}/build")
   MESSAGE(NOTICE 
-      "You Needs Add `target_link_libraries(\$\{your_executable_file\} PRIVATE tokenizer)` in You Root CMakeLists.txt.")
+      "You needs add `target_link_libraries(\$\{your_executable_file\} PRIVATE tokenizer)` in your root CMakeLists.txt.")
+  MESSAGE(NOTICE 
+      "If rebuild tokenizer, you needs manually remove ${tokenizer_SOURCE_DIR}/build.")
 endif ()
 
 
