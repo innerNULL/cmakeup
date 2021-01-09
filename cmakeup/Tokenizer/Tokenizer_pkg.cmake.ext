@@ -1,0 +1,51 @@
+# file: Tokenizer_pkg.cmake
+# date: 2021-01-08
+
+
+include(ExternalProject)
+
+set(TARGET_PROJECT_NAME "Tokenizer")
+set(TARGET_GIT_URL "https://github.com/OpenNMT/Tokenizer.git")
+set(TARGET_TAG "master")
+set(EXTERNAL_PROJECT_ROOT "./_ext")
+set(TARGET_SRC_DIR ${EXTERNAL_PROJECT_ROOT}/src/${TARGET_PROJECT_NAME})
+execute_process(COMMAND pwd OUTPUT_VARIABLE CURR_PATH)
+string(REPLACE "\n" "" CURR_PATH ${CURR_PATH})
+get_filename_component(CURR_PATH ${CURR_PATH} ABSOLUTE)
+
+message(${CMAKE_SOURCE_DIR})
+message(${CMAKE_CURRENT_SOURCE_DIR})
+message(${EXTERNAL_PROJECT_ROOT})
+message(STATUS "current path: ${CURR_PATH}")
+
+
+if (UNIX) 
+  list(APPEND CMAKE_PREFIX_PATH "/usr/local/opt/icu4c")
+  set(TARGET_CMAKE_ARGS "-DCMAKE_PREFIX_PATH=/usr/local/opt/icu4c")
+endif()
+
+set(MAKE_BUILD_ARGS "-j8")
+
+ExternalProject_Add(tokenizer_ext 
+  PREFIX ${EXTERNAL_PROJECT_ROOT}  
+  GIT_REPOSITORY  ${TARGET_GIT_URL}
+  GIT_TAG ${TARGET_TAG}
+  #SOURCE_DIR ${TARGET_SRC_DIR} 
+  #PATCH_COMMAND mkdir build && cd build && cmake ../ -DCMAKE_PREFIX_PATH="/usr/local/opt/icu4c"
+  BUILD_COMMAND make ${MAKE_BUILD_ARGS}
+  CMAKE_ARGS ${TARGET_CMAKE_ARGS}  
+)
+
+set(SHARED_LIB "${CURR_PATH}/${EXTERNAL_PROJECT_ROOT}/src/tokenizer_ext-build/libOpenNMTTokenizer.dylib")
+set(INCLUDE_DIR "${CURR_PATH}/${EXTERNAL_PROJECT_ROOT}/src/tokenizer_ext/include")
+
+include_directories(${INCLUDE_DIR})
+include_directories(${CURR_PATH}/${EXTERNAL_PROJECT_ROOT}/src/tokenizer_ext-build/onmt)
+add_library(tokenizer SHARED IMPORTED)
+set_target_properties(tokenizer 
+  PROPERTIES IMPORTED_LOCATION ${SHARED_LIB}
+)
+
+message(${SHARED_LIB})
+message(${INCLUDE_DIR})
+
