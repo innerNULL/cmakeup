@@ -8,21 +8,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 set(CMAKE_BUILD_TYPE "Debug")
-#set(CMAKE_VERBOSE_MAKEFILE on)
 set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 
 include(ExternalProject)
-#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 include(fastText_pkg)
-
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-#include_directories(${PROJECT_SOURCE_DIR})
 
 
 set(DEMO ./main.cpp)
 add_executable(main ${DEMO})
 target_link_libraries(main PRIVATE ${fastText_lib})
-#target_link_libraries(demos PRIVATE tokenizer) 
