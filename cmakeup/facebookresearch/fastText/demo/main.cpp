@@ -3,6 +3,9 @@
 
 
 #include "fasttext.h"
+#include "model.h"
+
+
 
 
 int main() {
