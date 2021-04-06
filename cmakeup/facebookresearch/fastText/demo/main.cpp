@@ -9,5 +9,6 @@
 
 
 int main() {
+  fasttext::FastText fasttext;
   return 0;
 }
