@@ -18,6 +18,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 include(fastText_pkg)
 
 
-set(DEMO ./main.cpp)
-add_executable(main ${DEMO})
-target_link_libraries(main PRIVATE ${fastText_lib})
+set(DEMO ./demo.cpp)
+add_executable(demo ${DEMO})
+target_link_libraries(demo PRIVATE ${fastText_lib})
