@@ -32,6 +32,7 @@ int32_t prediction_demo(const std::string& model_path,
   std::vector< std::pair<float, std::string> > predictions;
   model.predictLine(model_input_, predictions, 3, 0.01);
 
+  std::cout << "Prediction results: " << std::endl;
   for (std::vector< std::pair<float, std::string> >::iterator iter = predictions.begin(); 
           iter < predictions.end(); ++iter) {
     std::cout << "category: " << iter->second << ", score: " << iter->first << std::endl;
