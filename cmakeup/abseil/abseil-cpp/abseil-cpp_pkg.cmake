@@ -35,5 +35,6 @@ set(${RESPOSITORY}_subdirectory_path
   "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}")
 message(STATUS "${RESPOSITORY}_subdirectory_path: ${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}")
 
-add_subdirectory(${${RESPOSITORY}_subdirectory_path})
+# add_subdirectory(${${RESPOSITORY}_subdirectory_path})
+add_subdirectory(${${RESPOSITORY}_subdirectory_path} ${CMAKE_CURRENT_SOURCE_DIR})
 message(STATUS "You should add `target_link_libraries(\${TARGET_BIN} absl::xxxx})` for target-bin.")
