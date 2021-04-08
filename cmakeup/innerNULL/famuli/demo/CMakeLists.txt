@@ -23,7 +23,6 @@ include_directories("/home/renan/Documents/projects/github/cmakeup/cmakeup/inner
 
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
-message("dbg ${fastText_lib}")
 #target_link_libraries(demo PUBLIC famuli_static)
 target_link_libraries(demo PUBLIC ${fastText_lib})
 target_link_libraries(demo PUBLIC absl::strings)
