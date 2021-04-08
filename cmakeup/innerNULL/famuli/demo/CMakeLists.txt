@@ -14,15 +14,15 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 include(ExternalProject)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
+# Following are famuli and its using dependencies.
 include(famuli_pkg)
 include(fastText_pkg)
 include(spdlog_pkg)
 include(abseil-cpp_pkg)
 
-include_directories("/home/renan/Documents/projects/github/cmakeup/cmakeup/innerNULL/famuli/demo/build/_3rdparty/fastText-master/src/")
 
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
-#target_link_libraries(demo PUBLIC famuli_static)
+# Following are famuli and its using dependencies.
 target_link_libraries(demo PUBLIC ${fastText_lib})
 target_link_libraries(demo PUBLIC absl::strings)
