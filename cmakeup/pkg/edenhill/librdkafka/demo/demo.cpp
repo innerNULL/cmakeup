@@ -6,5 +6,6 @@
 
 
 int main() {
+  RdKafka::Conf *conf = nullptr;
   return 0;
 }

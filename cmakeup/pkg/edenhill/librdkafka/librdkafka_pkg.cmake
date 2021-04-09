@@ -36,7 +36,7 @@ endif()
 
 
 set(${RESPOSITORY}_include_path
-  "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/src-cpp")
+    "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/src-cpp;${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/generated")
 set(${RESPOSITORY}_lib 
   "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/src-cpp/librdkafka++.a"
 )
