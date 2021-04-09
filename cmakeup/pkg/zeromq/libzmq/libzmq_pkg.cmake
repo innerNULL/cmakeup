@@ -44,4 +44,4 @@ message(STATUS "${RESPOSITORY}_include_path: ${CURR_PATH}/${THIRDPARTY_ROOT}/${S
 message(STATUS "${RESPOSITORY}_lib: ${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/lib/*.a")
 
 include_directories(${${RESPOSITORY}_include_path})
-message(STATUS "You should add `target_link_libraries(\${TARGET_BIN} PRIVATE \${${RESPOSITORY}_lib})` for target-bin.")
+message(STATUS "You should add `target_link_libraries(\${TARGET_BIN} PUBLIC \${${RESPOSITORY}_lib})` for target-bin.")
