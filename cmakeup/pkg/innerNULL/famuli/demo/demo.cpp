@@ -6,13 +6,13 @@
 #include "famuli/model/fasttext.h"
 
 
-int32_t fasttext_demo(const std::string& model_path) {
+void fasttext_demo(const std::string& model_path) {
   famuli::Fasttext fasttext(model_path);
   fasttext.init();
   std::vector< std::pair<float, std::string> > predictions; 
   fasttext.infer(&predictions, 
       "上 海 老 相 机 制 造 博 物 馆 即 将 开 门 迎 客");
-  famuli::Fasttext::print_outputs(predictions);   
+  famuli::Fasttext::print_outputs(predictions);  
 }
 
 
