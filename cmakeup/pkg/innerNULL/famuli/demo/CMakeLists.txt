@@ -16,8 +16,11 @@ include(ExternalProject)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 # Following are famuli and its using dependencies.
 include(famuli_pkg)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../facebookresearch/fastText/;${CMAKE_MODULE_PATH}")
 include(fastText_pkg)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../gabime/spdlog/;${CMAKE_MODULE_PATH}")
 include(spdlog_pkg)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../abseil/abseil-cpp/;${CMAKE_MODULE_PATH}")
 include(abseil-cpp_pkg)
 
 
