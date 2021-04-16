@@ -11,8 +11,8 @@
 #include <thread>
 
 int main(int argc, char **argv) {
-  //auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({"echo.websocket.org", 80});
-  //const std::shared_ptr<oatpp::websocket::WebSocket> websocket;
-  oatpp::base::Environment::init();
+  oatpp::base::Environment::init(); 
+  auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({"echo.websocket.org", 80});
+  const std::shared_ptr<oatpp::websocket::WebSocket> websocket;
   return 0;
 }

@@ -29,7 +29,9 @@ else()
   execute_process(COMMAND mv ${SRC_FOLDER_NAME} ${THIRDPARTY_ROOT})
   execute_process(COMMAND mv ${VERSION}.zip ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}.zip)
   execute_process(COMMAND mkdir -p ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build)
-  execute_process(COMMAND cmake ../ -D OATPP_MODULES_LOCATION=EXTERNAL WORKING_DIRECTORY ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build)
+  execute_process(
+      COMMAND cmake ../ -D OATPP_MODULES_LOCATION=EXTERNAL -D OATPP_EXTERNAL_SOURCE=URL
+      WORKING_DIRECTORY ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build)
   execute_process(COMMAND make -j8 WORKING_DIRECTORY ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build)
 endif()
 
@@ -39,8 +41,12 @@ set(${RESPOSITORY}_include_path
 set(${RESPOSITORY}_dep_include_path 
     "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/lib_oatpp_external-prefix/src/lib_oatpp_external/src/")
 set(${RESPOSITORY}_include_path "${${RESPOSITORY}_include_path};${${RESPOSITORY}_dep_include_path}")
+
 set(${RESPOSITORY}_lib 
   "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/src/liboatpp-websocket.a")
+set(${RESPOSITORY}_dep_lib 
+  "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build/lib_oatpp_external-prefix/src/lib_oatpp_external-build/src/liboatpp.a")
+set(${RESPOSITORY}_lib "${${RESPOSITORY}_lib};${${RESPOSITORY}_dep_lib}")
 
 message(STATUS "${RESPOSITORY}_include_path: ${${RESPOSITORY}_include_path}")
 message(STATUS "${RESPOSITORY}_lib: ${${RESPOSITORY}_lib}")
