@@ -5,4 +5,8 @@ For now, this project is still in development and if you want using certain cmak
 
 
 # Libraries
-
+* [abseil](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/abseil/abseil-cpp)
+    * [abseil-cpp](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/abseil/abseil-cpp)
+* [google](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/google)
+    * [googletest](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/google/googletest)
+    * [sentencepiece](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/google/sentencepiece)
