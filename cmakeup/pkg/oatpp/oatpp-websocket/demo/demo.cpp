@@ -10,9 +10,18 @@
 
 #include <thread>
 
-int main(int argc, char **argv) {
-  oatpp::base::Environment::init(); 
+
+void run() {
   auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({"echo.websocket.org", 80});
-  const std::shared_ptr<oatpp::websocket::WebSocket> websocket;
+  auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
+  auto connection = connector->connect("/");
+  auto socket = oatpp::websocket::WebSocket::createShared(connection, true /* maskOutgoingMessages must be true for clients */);
+}
+
+
+int main(int argc, char **argv) {
+  oatpp::base::Environment::init();
+  run();
+  oatpp::base::Environment::destroy();
   return 0;
 }
