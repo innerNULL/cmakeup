@@ -94,7 +94,7 @@ void run(std::string ws_url, int32_t port, std::string sub_url="/") {
   auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
   tmp_log = "Init connection. Connect to: " + ws_url + ":" + std::to_string(port) + sub_url;
   OATPP_LOGD(TAG, tmp_log.c_str());
-  auto connection = connector->connect("/");
+  auto connection = connector->connect(sub_url.c_str());
   auto socket = oatpp::websocket::WebSocket::createShared(connection, true /* maskOutgoingMessages must be true for clients */);
   
   std::mutex socketWriteMutex;
