@@ -81,8 +81,10 @@ void socketTask(const std::shared_ptr<oatpp::websocket::WebSocket>& websocket) {
 }
 
 
-void run(std::string ws_url) {
-  auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({"echo.websocket.org", 80});
+void run(std::string ws_url, int32_t port, std::string sub_url="/") {
+  oatpp::network::Address address(ws_url.c_str(), port /* port */);
+
+  auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(address);
   auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
   auto connection = connector->connect("/");
   auto socket = oatpp::websocket::WebSocket::createShared(connection, true /* maskOutgoingMessages must be true for clients */);
@@ -106,10 +108,21 @@ void run(std::string ws_url) {
 
 
 int main(int argc, char **argv) {
-  std::string ws_url = "wss://stream.data.alpaca.markets/v2/iex";
+  //std::string ws_url = "echo.websocket.org";
+  //int32_t port = 80;
+  //std::string sub_url = "/";
+  //std::string ws_url = "stream.binance.com";
+  //int32_t port = 9443;
+  //std::string sub_url = "ws/bnbbtc@kline_1m";
+
+  /// Test OK: websocat wss://stream.data.alpaca.markets:443/v2/iex
+  std::string ws_url = "stream.data.alpaca.markets";
+  int32_t port = 443;
+  std::string sub_url = "v2/iex"; 
 
   oatpp::base::Environment::init();
-  run(ws_url);
+  run(ws_url, port, sub_url);
   oatpp::base::Environment::destroy();
+  
   return 0;
 }
