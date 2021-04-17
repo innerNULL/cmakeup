@@ -119,11 +119,13 @@ int main(int argc, char **argv) {
   //std::string ws_url = "echo.websocket.org";
   //int32_t port = 80;
   //std::string sub_url = "/";
+  
+  /// Binance wss
   //std::string ws_url = "stream.binance.com";
   //int32_t port = 9443;
   //std::string sub_url = "ws/bnbbtc@kline_1m";
 
-  /// Test OK: websocat wss://stream.data.alpaca.markets:443/v2/iex
+  /// Alpaca, Test OK: websocat wss://stream.data.alpaca.markets:443/v2/iex
   std::string ws_url = "stream.data.alpaca.markets";
   int32_t port = 443;
   std::string sub_url = "/v2/iex"; 
