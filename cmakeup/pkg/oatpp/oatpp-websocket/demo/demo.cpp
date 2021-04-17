@@ -82,10 +82,18 @@ void socketTask(const std::shared_ptr<oatpp::websocket::WebSocket>& websocket) {
 
 
 void run(std::string ws_url, int32_t port, std::string sub_url="/") {
-  oatpp::network::Address address(ws_url.c_str(), port /* port */);
+  std::string tmp_log;
 
+  OATPP_LOGD(TAG, "Init address.");
+  oatpp::network::Address address(ws_url.c_str(), port /* port */);
+  OATPP_LOGD(TAG, "Finished init address.");
+
+  tmp_log = "Init connector, URL: " + ws_url;
+  OATPP_LOGD(TAG, tmp_log.c_str()); 
   auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(address);
   auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
+  tmp_log = "Init connection. Connect to: " + ws_url + ":" + std::to_string(port) + sub_url;
+  OATPP_LOGD(TAG, tmp_log.c_str());
   auto connection = connector->connect("/");
   auto socket = oatpp::websocket::WebSocket::createShared(connection, true /* maskOutgoingMessages must be true for clients */);
   
@@ -118,7 +126,7 @@ int main(int argc, char **argv) {
   /// Test OK: websocat wss://stream.data.alpaca.markets:443/v2/iex
   std::string ws_url = "stream.data.alpaca.markets";
   int32_t port = 443;
-  std::string sub_url = "v2/iex"; 
+  std::string sub_url = "/v2/iex"; 
 
   oatpp::base::Environment::init();
   run(ws_url, port, sub_url);
