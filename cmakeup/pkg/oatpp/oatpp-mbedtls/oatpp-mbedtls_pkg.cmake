@@ -5,6 +5,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 set(THIRDPARTY_ROOT "./_3rdparty")
+set(CMKAE_MODULE_ROOT "./cmake")
 set(VERSION "master")
 set(ORGANIZATION "oatpp")
 set(RESPOSITORY "oatpp-mbedtls")
@@ -19,6 +20,20 @@ get_filename_component(CURR_PATH ${CURR_PATH} ABSOLUTE)
 
 set(SRC_FOLDER_NAME ${RESPOSITORY}-${VERSION})
 
+execute_process(COMMAND mkdir -p ${CMKAE_MODULE_ROOT})
+
+if(EXISTS ${CURR_PATH}/${CMKAE_MODULE_ROOT}/Findmbedtls.cmake)
+    message(STATUS "${CURR_PATH}/${CMKAE_MODULE_ROOT}/Findmbedtls.cmake exists")
+else()
+    execute_process(
+    COMMAND wget https://raw.githubusercontent.com/oatpp/example-websocket/master/cmake/module/Findmbedtls.cmake 
+    WORKING_DIRECTORY ${CMKAE_MODULE_ROOT})
+endif()
+
+message(STATUS "Appends CMAKE_MODULE_PATH: ${CURR_PATH}/${CMKAE_MODULE_ROOT}")
+set(CMAKE_MODULE_PATH "${CURR_PATH}/${CMKAE_MODULE_ROOT};${CMAKE_MODULE_PATH}")
+include(FindPkgConfig)
+include(Findmbedtls)
 
 if(EXISTS "${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}")
   message(STATUS "${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME} exists")
@@ -35,6 +50,7 @@ else()
   execute_process(COMMAND make -j8 WORKING_DIRECTORY ${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/build)
 endif()
 
+find_package(mbedtls 2.16.0 REQUIRED)
 
 set(${RESPOSITORY}_include_path
   "${CURR_PATH}/${THIRDPARTY_ROOT}/${SRC_FOLDER_NAME}/src")
@@ -52,4 +68,4 @@ message(STATUS "${RESPOSITORY}_include_path: ${${RESPOSITORY}_include_path}")
 message(STATUS "${RESPOSITORY}_lib: ${${RESPOSITORY}_lib}")
 
 include_directories(${${RESPOSITORY}_include_path})
-message(STATUS "You should add `target_link_libraries(\${__TARGET_BIN__} PUBLIC \${${RESPOSITORY}_lib})` for target-bin.")
+message(STATUS "You should add `target_link_libraries(\${__TARGET_BIN__} PUBLIC \${${RESPOSITORY}_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)` for target-bin.")
