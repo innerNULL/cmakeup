@@ -16,8 +16,11 @@ include(ExternalProject)
 #set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 include(oatpp-websocket_pkg) 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../oatpp-mbedtls/;${CMAKE_MODULE_PATH}")
+include(oatpp-mbedtls_pkg)
 
 
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
 target_link_libraries(demo PUBLIC ${oatpp-websocket_lib})
+target_link_libraries(demo PUBLIC ${oatpp-mbedtls_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)

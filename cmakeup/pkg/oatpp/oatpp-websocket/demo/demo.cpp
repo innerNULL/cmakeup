@@ -2,15 +2,18 @@
 /// date: 2021-04-16
 
 
+#include <thread>
 #include "oatpp-websocket/WebSocket.hpp"
 #include "oatpp-websocket/Connector.hpp"
 #include "oatpp-websocket/ConnectionHandler.hpp"
 #include "oatpp-websocket/WebSocket.hpp"
-
 #include "oatpp/network/tcp/client/ConnectionProvider.hpp"
+#include "oatpp-mbedtls/client/ConnectionProvider.hpp"
+#include "oatpp-mbedtls/Config.hpp"
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
-#include <thread>
 
+#define PROTO_WSS
 
 bool finished = false;
 const char* TAG = "websocket-client";
@@ -84,13 +87,21 @@ void socketTask(const std::shared_ptr<oatpp::websocket::WebSocket>& websocket) {
 void run(std::string ws_url, int32_t port, std::string sub_url="/") {
   std::string tmp_log;
 
+  auto config = oatpp::mbedtls::Config::createDefaultClientConfigShared();
+
   OATPP_LOGD(TAG, "Init address.");
   oatpp::network::Address address(ws_url.c_str(), port /* port */);
   OATPP_LOGD(TAG, "Finished init address.");
 
   tmp_log = "Init connector, URL: " + ws_url;
-  OATPP_LOGD(TAG, tmp_log.c_str()); 
-  auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(address);
+  OATPP_LOGD(TAG, tmp_log.c_str());
+
+#ifndef PROTO_WSS
+    auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared(address);
+#else
+    auto connectionProvider = oatpp::mbedtls::client::ConnectionProvider::createShared(config, address);
+#endif
+
   auto connector = oatpp::websocket::Connector::createShared(connectionProvider);
   tmp_log = "Init connection. Connect to: " + ws_url + ":" + std::to_string(port) + sub_url;
   OATPP_LOGD(TAG, tmp_log.c_str());
