@@ -9,11 +9,12 @@ set(CMKAE_MODULE_ROOT "./cmake")
 set(VERSION "master")
 set(ORGANIZATION "oatpp")
 set(RESPOSITORY "oatpp-mbedtls")
-
+set(GITHUB_PROXY "https://ghproxy.com/")
 
 # Default: https://github.com/oatpp/oatpp-mbedtls/archive/refs/heads/master.zip 
 set(PROJ ${ORGANIZATION}/${RESPOSITORY})
-set(TARGET_URL "https://github.com/${PROJ}/archive/refs/heads/${VERSION}.zip")
+#set(TARGET_URL "https://github.com/${PROJ}/archive/refs/heads/${VERSION}.zip")
+set(TARGET_URL "${GITHUB_PROXY}https://github.com/${PROJ}/archive/refs/heads/${VERSION}.zip")
 execute_process(COMMAND pwd OUTPUT_VARIABLE CURR_PATH)
 string(REPLACE "\n" "" CURR_PATH ${CURR_PATH})
 get_filename_component(CURR_PATH ${CURR_PATH} ABSOLUTE)
@@ -26,7 +27,8 @@ if(EXISTS ${CURR_PATH}/${CMKAE_MODULE_ROOT}/Findmbedtls.cmake)
     message(STATUS "${CURR_PATH}/${CMKAE_MODULE_ROOT}/Findmbedtls.cmake exists")
 else()
     execute_process(
-    COMMAND wget https://raw.githubusercontent.com/oatpp/example-websocket/master/cmake/module/Findmbedtls.cmake 
+    #COMMAND wget https://raw.githubusercontent.com/oatpp/example-websocket/master/cmake/module/Findmbedtls.cmake
+    COMMAND wget ${GITHUB_PROXY}https://raw.githubusercontent.com/oatpp/example-websocket/master/cmake/module/Findmbedtls.cmake
     WORKING_DIRECTORY ${CMKAE_MODULE_ROOT})
 endif()
 
@@ -69,3 +71,4 @@ message(STATUS "${RESPOSITORY}_lib: ${${RESPOSITORY}_lib}")
 
 include_directories(${${RESPOSITORY}_include_path})
 message(STATUS "You should add `target_link_libraries(\${__TARGET_BIN__} PUBLIC \${${RESPOSITORY}_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)` for target-bin.")
+message(STATUS "Finished integrate oatpp-mbedtls.")
