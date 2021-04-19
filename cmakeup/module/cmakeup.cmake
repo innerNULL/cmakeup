@@ -15,16 +15,19 @@ macro(set_curr_path)
 endmacro(set_curr_path)
 
 
-macro(set_var)
+macro(set_var cmakeup_dep_path cmakeup_github_proxy)
     cmakeup_log("set_var" "Setting global vars.")
     set_curr_path()
     
-    cmakeup_log("set_var" "Unset `CMAKEUP_DEP_ROOT`.")
     unset(CMAKEUP_DEP_ROOT CACHE)
-    set(CMAKEUP_DEP_ROOT "${CURR_PATH}/./_cmakeup_dep" CACHE STRING "")
+    set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
     execute_process(COMMAND mkdir -p ${CMAKEUP_DEP_ROOT})
+
+    unset(CMAKEUP_GITHUB_PROXY CACHE)
+    set(CMAKEUP_GITHUB_PROXY ${cmakeup_github_proxy} CACHE STRING "cmakeup github proxy")
+
     cmakeup_log("set_var" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
-    
+    cmakeup_log("set_var" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
     cmakeup_log("set_var" "Finished setting global vars.")
 endmacro(set_var)
 
@@ -40,7 +43,14 @@ macro(set_github_pkg org respository branch github_proxy)
     set(ORGANIZATION ${org})
     set(RESPOSITORY ${respository})
     set(BRANCH ${branch})
-    set(GITHUB_PROXY ${github_proxy})
+
+    if(${github_proxy} STREQUAL global)
+        set(GITHUB_PROXY ${CMAKEUP_GITHUB_PROXY})
+        cmakeup_log("set_github_pkg" "Sets GITHUB_PROXY with CMAKEUP_GITHUB_PROXY: ${GITHUB_PROXY}.")
+    else()
+        set(GITHUB_PROXY ${github_proxy})
+        cmakeup_log("set_github_pkg" "Sets GITHUB_PROXY as: ${GITHUB_PROXY}.") 
+    endif()
 
     set(PROJ ${ORGANIZATION}/${RESPOSITORY})
     set(TARGET_URL "${GITHUB_PROXY}https://github.com/${PROJ}/archive/refs/heads/${BRANCH}.zip")
@@ -84,6 +94,4 @@ macro(cmake_build src_dir_path cmake_args make_args)
     cmakeup_log("cmake_build" "Finished execute cmake cmd: ${CMAKE_CMD}")
     cmakeup_log("cmake_build" "Finished execute make cmd: ${MAKE_CMD}")
 endmacro(cmake_build)
-
-
 
