@@ -15,8 +15,8 @@ macro(set_curr_path)
 endmacro(set_curr_path)
 
 
-macro(set_var cmakeup_dep_path cmakeup_github_proxy)
-    cmakeup_log("set_var" "Setting global vars.")
+macro(set_cmakeup_global_var cmakeup_dep_path cmakeup_github_proxy)
+    cmakeup_log("set_cmakeup_global_var" "Setting global vars.")
     set_curr_path()
     
     unset(CMAKEUP_DEP_ROOT CACHE)
@@ -26,10 +26,10 @@ macro(set_var cmakeup_dep_path cmakeup_github_proxy)
     unset(CMAKEUP_GITHUB_PROXY CACHE)
     set(CMAKEUP_GITHUB_PROXY ${cmakeup_github_proxy} CACHE STRING "cmakeup github proxy")
 
-    cmakeup_log("set_var" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
-    cmakeup_log("set_var" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
-    cmakeup_log("set_var" "Finished setting global vars.")
-endmacro(set_var)
+    cmakeup_log("set_cmakeup_global_var" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
+    cmakeup_log("set_cmakeup_global_var" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
+    cmakeup_log("set_cmakeup_global_var" "Finished setting global vars.")
+endmacro(set_cmakeup_global_var)
 
 
 macro(set_github_pkg org respository branch github_proxy)
