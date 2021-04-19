@@ -9,10 +9,10 @@ set(MBEDTLS_INSTALL_PATH "./install")
 
 
 macro(integrate_mbedtls)
-    set_var()
-
-    init_github_pkg("ARMmbed" "mbedtls" "master" "https://ghproxy.com/")
-    cmake_build(${CMAKEUP_DEP_SRC_PATH} 
+    cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
+    #init_github_pkg("ARMmbed" "mbedtls" "master" "https://ghproxy.com/")
+    cmakeup_github_pkg_init("ARMmbed" "mbedtls" "master" "global")
+    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
         "-DCMAKE_INSTALL_PREFIX:PATH=${MBEDTLS_INSTALL_PATH}" 
         "install")
 

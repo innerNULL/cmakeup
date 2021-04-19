@@ -15,8 +15,8 @@ macro(set_curr_path)
 endmacro(set_curr_path)
 
 
-macro(set_cmakeup_global_var cmakeup_dep_path cmakeup_github_proxy)
-    cmakeup_log("set_cmakeup_global_var" "Setting global vars.")
+macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
+    cmakeup_log("cmakeup_init" "Setting global vars.")
     set_curr_path()
     
     unset(CMAKEUP_DEP_ROOT CACHE)
@@ -26,14 +26,14 @@ macro(set_cmakeup_global_var cmakeup_dep_path cmakeup_github_proxy)
     unset(CMAKEUP_GITHUB_PROXY CACHE)
     set(CMAKEUP_GITHUB_PROXY ${cmakeup_github_proxy} CACHE STRING "cmakeup github proxy")
 
-    cmakeup_log("set_cmakeup_global_var" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
-    cmakeup_log("set_cmakeup_global_var" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
-    cmakeup_log("set_cmakeup_global_var" "Finished setting global vars.")
-endmacro(set_cmakeup_global_var)
+    cmakeup_log("cmakeup_init" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
+    cmakeup_log("cmakeup_init" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
+    cmakeup_log("cmakeup_init" "Finished setting global vars.")
+endmacro(cmakeup_init)
 
 
-macro(set_github_pkg org respository branch github_proxy)
-    cmakeup_log("set_github_pkg" "Setting package.")
+macro(cmakeup_github_pkg_set org respository branch github_proxy)
+    cmakeup_log("cmakeup_github_pkg_set" "Setting package.")
 
     #set(BRANCH "master")
     #set(ORGANIZATION "oatpp")
@@ -46,10 +46,10 @@ macro(set_github_pkg org respository branch github_proxy)
 
     if(${github_proxy} STREQUAL global)
         set(GITHUB_PROXY ${CMAKEUP_GITHUB_PROXY})
-        cmakeup_log("set_github_pkg" "Sets GITHUB_PROXY with CMAKEUP_GITHUB_PROXY: ${GITHUB_PROXY}.")
+        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_PROXY with CMAKEUP_GITHUB_PROXY: ${GITHUB_PROXY}.")
     else()
         set(GITHUB_PROXY ${github_proxy})
-        cmakeup_log("set_github_pkg" "Sets GITHUB_PROXY as: ${GITHUB_PROXY}.") 
+        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_PROXY as: ${GITHUB_PROXY}.") 
     endif()
 
     set(PROJ ${ORGANIZATION}/${RESPOSITORY})
@@ -57,32 +57,32 @@ macro(set_github_pkg org respository branch github_proxy)
 
     set(PKG_DEP_ROOT ${CMAKEUP_DEP_ROOT}/${ORGANIZATION}/${RESPOSITORY}/${BRANCH})
     execute_process(COMMAND mkdir -p ${PKG_DEP_ROOT})
-    cmakeup_log("set_github_pkg" "PKG_DEP_ROOT: ${PKG_DEP_ROOT}")
+    cmakeup_log("cmakeup_github_pkg_set" "PKG_DEP_ROOT: ${PKG_DEP_ROOT}")
 
     set(CMAKEUP_DEP_SRC_FOLDER ${RESPOSITORY}-${BRANCH})
     set(CMAKEUP_DEP_SRC_PATH ${PKG_DEP_ROOT}/${CMAKEUP_DEP_SRC_FOLDER})
 
-    cmakeup_log("set_github_pkg" "Finished setting package: ${TARGET_URL}")
-endmacro(set_github_pkg)
+    cmakeup_log("cmakeup_github_pkg_set" "Finished setting package: ${TARGET_URL}")
+endmacro(cmakeup_github_pkg_set)
 
 
-macro(get_git_pkg target_url pkg_dep_root branch src_dir_name)
+macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
     if(EXISTS "${pkg_dep_root}/${branch}.zip")
-        cmakeup_log("get_git_pkg" "Pkg zip file ${pkg_dep_root}/${branch}.zip already exists.")
+        cmakeup_log("cmakeup_git_pkg_get" "Pkg zip file ${pkg_dep_root}/${branch}.zip already exists.")
     else()
         execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
     endif()
-endmacro(get_git_pkg)
+endmacro(cmakeup_git_pkg_get)
 
 
-macro(init_github_pkg org respository branch github_proxy)
-    set_github_pkg(${org} ${respository} ${branch} ${github_proxy})
-    get_git_pkg(${TARGET_URL} ${PKG_DEP_ROOT} ${BRANCH} ${CMAKEUP_DEP_SRC_FOLDER})
-endmacro(init_github_pkg)
+macro(cmakeup_github_pkg_init org respository branch github_proxy)
+    cmakeup_github_pkg_set(${org} ${respository} ${branch} ${github_proxy})
+    cmakeup_git_pkg_get(${TARGET_URL} ${PKG_DEP_ROOT} ${BRANCH} ${CMAKEUP_DEP_SRC_FOLDER})
+endmacro(cmakeup_github_pkg_init)
 
 
-macro(cmake_build src_dir_path cmake_args make_args)
+macro(cmakeup_cmake_build src_dir_path cmake_args make_args)
     set(CMAKE_CMD "cmake ../ ${cmake_args}")
     set(MAKE_CMD "make ${make_args}")
 
@@ -93,5 +93,5 @@ macro(cmake_build src_dir_path cmake_args make_args)
     cmakeup_log("cmake_build" "Executing build at ${src_dir_path}/build.")
     cmakeup_log("cmake_build" "Finished execute cmake cmd: ${CMAKE_CMD}")
     cmakeup_log("cmake_build" "Finished execute make cmd: ${MAKE_CMD}")
-endmacro(cmake_build)
+endmacro(cmakeup_cmake_build)
 
