@@ -5,25 +5,45 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 
-set(MBEDTLS_INSTALL_PATH "./install")
+set(_INSTALL_PATH "./install")
+set(_ORG "ARMmbed")
+set(_REPOSITORY "mbedtls")
+set(_BRANCH "master")
+set(_GITHUB_PROXY "global")
+
+set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
+
+
+macro(cmakeup_build_mbedtls)
+    #cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
+    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_PROXY})
+    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
+        "-DCMAKE_INSTALL_PREFIX:PATH=${_INSTALL_PATH}" 
+        "install")
+
+endmacro(cmakeup_build_mbedtls)
+
+
+macro(cmakeup_set_mbedtls_var)
+    set(_lib_root_path "${CMAKEUP_DEP_SRC_PATH}/build/${_INSTALL_PATH}")
+    
+    set(_include_path ${_lib_root_path}/include)
+    
+    set(_static_lib_path "${_lib_root_path}/lib/libmbedcrypto.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedtls.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedx509.a")
+    
+    cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
+    cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
+    cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
+endmacro(cmakeup_set_mbedtls_var)
 
 
 macro(integrate_mbedtls)
-    cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
-    #init_github_pkg("ARMmbed" "mbedtls" "master" "https://ghproxy.com/")
-    cmakeup_github_pkg_init("ARMmbed" "mbedtls" "master" "global")
-    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
-        "-DCMAKE_INSTALL_PREFIX:PATH=${MBEDTLS_INSTALL_PATH}" 
-        "install")
-
-    set(CMAKEUP_MBEDTLS_ROOT_DIR 
-        "${CMAKEUP_DEP_SRC_PATH}/build/${MBEDTLS_INSTALL_PATH}" 
-        CACHE STRING "mbedtls install path.")
-
-    cmakeup_log("integrate_mbedtls" 
-        "Finished integrate mbedtls, sets an cmake global var CMAKEUP_MBEDTLS_ROOT_DIR: ${CMAKEUP_MBEDTLS_ROOT_DIR}")
+    cmakeup_build_mbedtls()
+    cmakeup_set_mbedtls_var()
 endmacro(integrate_mbedtls)
 
 
 integrate_mbedtls()
-
+#cmakeup_global_vars_printer()

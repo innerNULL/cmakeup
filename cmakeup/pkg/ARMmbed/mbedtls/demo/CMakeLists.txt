@@ -15,9 +15,12 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 include(ExternalProject)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../module;${CMAKE_MODULE_PATH}")
 include(cmakeup)
+cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/") 
+
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}") 
 include(mbedtls_pkg)
 
 
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
+cmakeup_global_vars_printer()
