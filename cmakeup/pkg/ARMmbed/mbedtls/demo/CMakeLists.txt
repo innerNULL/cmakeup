@@ -21,6 +21,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
 include(mbedtls_pkg)
 
 
+cmakeup_global_vars_printer()
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
-cmakeup_global_vars_printer()
+target_link_libraries(demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})

@@ -42,6 +42,7 @@ endmacro(cmakeup_set_mbedtls_var)
 macro(integrate_mbedtls)
     cmakeup_build_mbedtls()
     cmakeup_set_mbedtls_var()
+    include_directories(${CMAKEUP_INCLUDE_PATH_ARMmbed_mbedtls_master})
 endmacro(integrate_mbedtls)
 
 
