@@ -2,11 +2,13 @@
 # date: 2021-04-18
 
 
+# cmakeup log marco
 macro(cmakeup_log func_name log_str)
     message(STATUS "[cmakeup.${func_name}] ${log_str}")
 endmacro(cmakeup_log)
 
 
+# get current building absolute path
 macro(set_curr_path)
     execute_process(COMMAND pwd OUTPUT_VARIABLE CURR_PATH)
     string(REPLACE "\n" "" CURR_PATH ${CURR_PATH})
@@ -15,20 +17,71 @@ macro(set_curr_path)
 endmacro(set_curr_path)
 
 
+# record cmakeup caching global vars
+macro(cmakeup_global_vars_recorder append_global_var)
+    list(APPEND CMAKEUP_GLOBAL_VARS ${append_global_var})
+endmacro(cmakeup_global_vars_recorder)
+
+
+# print all cmakeup caching global vars
+macro(cmakeup_global_vars_printer)
+    foreach(item ${CMAKEUP_GLOBAL_VARS})
+        unset(curr_golbal_var_val)
+        set(curr_golbal_var_val "${${item}}")
+        cmakeup_log("cmakeup_global_vars_printer" "${item}: ${curr_golbal_var_val}")
+    endforeach(item)
+endmacro(cmakeup_global_vars_printer)
+
+
+# Initializing cmakeup env, includes:
+#     1. define and init some global vars.
+#     2. build some paths.
 macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     cmakeup_log("cmakeup_init" "Setting global vars.")
     set_curr_path()
+
+    # This is global var recorder
+    unset(CMAKEUP_GLOBAL_VARS CACHE)
+    set(CMAKEUP_GLOBAL_VARS CACHE LIST "cmakeup global vars")
     
+    # Init cmakeup dependencies file root path
     unset(CMAKEUP_DEP_ROOT CACHE)
     set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
+    cmakeup_global_vars_recorder(CMAKEUP_DEP_ROOT)
     execute_process(COMMAND mkdir -p ${CMAKEUP_DEP_ROOT})
 
+    # Init cmakeup github proxy
     unset(CMAKEUP_GITHUB_PROXY CACHE)
     set(CMAKEUP_GITHUB_PROXY ${cmakeup_github_proxy} CACHE STRING "cmakeup github proxy")
+    cmakeup_global_vars_recorder(CMAKEUP_GITHUB_PROXY)
 
-    cmakeup_log("cmakeup_init" "Sets CMAKEUP_DEP_ROOT as '${CMAKEUP_DEP_ROOT}'.")
-    cmakeup_log("cmakeup_init" "Set CMAKEUP_GITHUB_PROXY as '${CMAKEUP_GITHUB_PROXY}'.")
+    # Init cmakeup integrating package names.
+    unset(CMAKEUP_INTEGRATE_PKG CACHE)
+    set(CMAKEUP_INTEGRATE_PKG CACHE STRING "cmakeup integrating packages names.")
+    cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG)
+
+    # Init cmakeup integrated packages' header-file include path.
+    unset(CMAKEUP_INCLUDE_PATH CACHE)
+    set(CMAKEUP_INCLUDE_PATH  CACHE STRING "header files' include path managed by cmakeup.")
+    cmakeup_global_vars_recorder(CMAKEUP_INCLUDE_PATH)
+
+    # Init cmakeup integrated packages' static-lib path.
+    unset(CMAKEUP_STATIC_LIB CACHE)
+    set(CMAKEUP_STATIC_LIB  CACHE STRING "static lib files path managed by cmakeup.")
+    cmakeup_global_vars_recorder(CMAKEUP_STATIC_LIB)
+
+    # Init cmakeup integrated packages' dynamic(shared)-lib path.
+    unset(CMAKEUP_SHARED_LIB CACHE)
+    set(CMAKEUP_SHARED_LIB  CACHE STRING "shared/dynamic lib files path managed by cmakeup.")
+    cmakeup_global_vars_recorder(CMAKEUP_SHARED_LIB)
+
+    # Init cmakeup integrated packages' installation(root) path.
+    unset(CMAKEUP_LIB_ROOT_DIR CACHE)
+    set(CMAKEUP_LIB_ROOT_DIR CACHE STRING "lib installe dir. the 'install' means stardard install by `make insatll`")
+    cmakeup_global_vars_recorder(CMAKEUP_LIB_ROOT_DIR)
+
     cmakeup_log("cmakeup_init" "Finished setting global vars.")
+    cmakeup_global_vars_printer()
 endmacro(cmakeup_init)
 
 
