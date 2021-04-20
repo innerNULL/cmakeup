@@ -80,8 +80,8 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     set(CMAKEUP_LIB_ROOT_DIR CACHE STRING "lib installe dir. the 'install' means stardard install by `make insatll`")
     cmakeup_global_vars_recorder(CMAKEUP_LIB_ROOT_DIR)
 
-    cmakeup_log("cmakeup_init" "Finished setting global vars.")
     cmakeup_global_vars_printer()
+    cmakeup_log("cmakeup_init" "Finished setting global vars.")
 endmacro(cmakeup_init)
 
 
@@ -147,4 +147,15 @@ macro(cmakeup_cmake_build src_dir_path cmake_args make_args)
     cmakeup_log("cmake_build" "Finished execute cmake cmd: ${CMAKE_CMD}")
     cmakeup_log("cmake_build" "Finished execute make cmd: ${MAKE_CMD}")
 endmacro(cmakeup_cmake_build)
+
+
+# Register a packages related var(install/root path, header files' path, static/shared(dynamic lib path))
+# to global variables.
+macro(cmakeup_pkg_var_register var_type pkg_tag val)
+    set(var_name ${var_type}_${pkg_tag})
+    unset(${var_name} CACHE)
+    set(${var_name} ${val} CACHE STRING "")
+    cmakeup_global_vars_recorder(${var_name})
+    list(APPEND ${var_type} ${var_name})
+endmacro(cmakeup_pkg_var_register)
 
