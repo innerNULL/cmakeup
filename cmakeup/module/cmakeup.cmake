@@ -79,6 +79,11 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     set(CMAKEUP_INTEGRATE_PKG CACHE STRING "cmakeup integrating packages names.")
     cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG)
 
+    # Init cmakeup integrating package src paths.
+    unset(CMAKEUP_INTEGRATE_PKG_ROOT CACHE)
+    set(CMAKEUP_INTEGRATE_PKG_ROOT  CACHE STRING "cmakeup pkg src code root path.")
+    cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG_ROOT)
+
     # Init cmakeup integrated packages' header-file include path.
     unset(CMAKEUP_INCLUDE_PATH CACHE)
     set(CMAKEUP_INCLUDE_PATH  CACHE STRING "header files' include path managed by cmakeup.")
