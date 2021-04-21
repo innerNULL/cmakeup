@@ -168,10 +168,21 @@ macro(cmakeup_cmake_build src_dir_path cmake_args make_args)
     cmakeup_log("cmake_build" "params: ${src_dir_path} ${cmake_args} ${make_args}")
     cmakeup_log("cmake_build" "Executing cmake cmd: ${CMAKE_CMD}") 
     cmakeup_log("cmake_build" "Executing make cmd: ${MAKE_CMD}")
+    cmakeup_log("cmake_build" "Working dir: ${src_dir_path}/build")
 
     execute_process(COMMAND mkdir -p ${src_dir_path}/build)
-    execute_process(COMMAND cmake ../ ${cmake_args} WORKING_DIRECTORY ${src_dir_path}/build)
-    execute_process(COMMAND make ${make_args} WORKING_DIRECTORY ${src_dir_path}/build)
+    
+    # NOTE: CMAKE IS TOO STRANGE!!!
+    # That the following line will not work, since `${cmake_args}` can not correctly 
+    # passed to `cmake`.
+    # But, the two lines after following two lines WORK!
+    #
+    # So the conclusion is, TRY OUT BEST TO USE LESS CMAKE ARGUMENTS/TRICKS!
+    #
+    #execute_process(COMMAND cmake ../ ${cmake_args} WORKING_DIRECTORY ${src_dir_path}/build)
+    #execute_process(COMMAND make ${make_args} WORKING_DIRECTORY ${src_dir_path}/build) 
+    execute_process(COMMAND bash -c "cd ${src_dir_path}/build && cmake ../ ${cmake_args}") 
+    execute_process(COMMAND bash -c "cd ${src_dir_path}/build && make ${make_args}")  
 
     cmakeup_log("cmake_build" "Executing build at ${src_dir_path}/build.")
     cmakeup_log("cmake_build" "Finished execute cmake cmd: ${CMAKE_CMD}")
