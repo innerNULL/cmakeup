@@ -13,11 +13,18 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 
 include(ExternalProject)
-#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}") 
+
+set(CMKAEUP_ROOT_PATH "${CMAKE_SOURCE_DIR}/../../../..")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
+include(cmakeup)
+cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
+cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
+cmakeup_pkg_cmake_importer("oatpp" "oatpp")
 include(oatpp_pkg)
 
 
+cmakeup_global_vars_printer()
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
-target_link_libraries(demo PUBLIC ${oatpp_lib})
+target_link_libraries(demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master})
+
