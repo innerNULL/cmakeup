@@ -32,7 +32,7 @@ macro(cmakeup_build_mbedtls)
 endmacro(cmakeup_build_mbedtls)
 
 
-macro(cmakeup_set_mbedtls_var)
+macro(cmakeup_set_mbedtls_lib_vars)
     set(_lib_root_path "${CMAKEUP_DEP_SRC_PATH}/build/${_INSTALL_PATH}")
     
     set(_include_path ${_lib_root_path}/include)
@@ -44,13 +44,13 @@ macro(cmakeup_set_mbedtls_var)
     cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
     cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
     cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
-endmacro(cmakeup_set_mbedtls_var)
+endmacro(cmakeup_set_mbedtls_lib_vars)
 
 
 macro(integrate_mbedtls)
     cmakeup_set_mbedtls_vars()
     cmakeup_build_mbedtls()
-    cmakeup_set_mbedtls_var()
+    cmakeup_set_mbedtls_lib_vars()
     include_directories(${CMAKEUP_INCLUDE_PATH_ARMmbed_mbedtls_master})
 endmacro(integrate_mbedtls)
 
