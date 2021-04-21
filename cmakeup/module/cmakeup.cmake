@@ -20,6 +20,7 @@ endmacro(set_curr_path)
 # record cmakeup caching global vars
 macro(cmakeup_global_vars_recorder append_global_var)
     list(APPEND CMAKEUP_GLOBAL_VARS ${append_global_var})
+    cmakeup_log(cmakeup_global_vars_recorder "Register ${append_global_var} into CMAKEUP_GLOBAL_VARS")
 endmacro(cmakeup_global_vars_recorder)
 
 
@@ -31,6 +32,24 @@ macro(cmakeup_global_vars_printer)
         cmakeup_log("cmakeup_global_vars_printer" "${item}: ${curr_golbal_var_val}")
     endforeach(item)
 endmacro(cmakeup_global_vars_printer)
+
+
+# set cmakeup root path
+macro(cmakeup_root_path_register cmakeup_root_path)
+    unset(CMAKEUP_ROOT_PATH CACHE)
+    set(CMAKEUP_ROOT_PATH "${cmakeup_root_path}" CACHE STRING "cmakeup scripts root path")
+    cmakeup_global_vars_recorder(CMAKEUP_ROOT_PATH)
+endmacro(cmakeup_root_path_register)
+
+
+# one step certain cmakeup package's cmake script. Before executing this, 
+# `cmakeup_root_path_register` should be executed.
+macro(cmakeup_pkg_cmake_importer org respository)
+    unset(_target_cmake_module_root)
+    set(_target_cmake_module_root ${CMAKEUP_ROOT_PATH}/pkg/${org}/${respository})
+    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${_target_cmake_module_root}")
+    cmakeup_log("cmakeup_pkg_cmake_importer" "Append ${_target_cmake_module_root} to CMAKE_MODULE_PATH.")
+endmacro(cmakeup_pkg_cmake_importer)
 
 
 # Initializing cmakeup env, includes:
