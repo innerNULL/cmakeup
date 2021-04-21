@@ -160,8 +160,14 @@ endmacro(cmakeup_github_pkg_init)
 
 
 macro(cmakeup_cmake_build src_dir_path cmake_args make_args)
+    unset(CMAKE_CMD)
+    unset(MAKE_CMD)
     set(CMAKE_CMD "cmake ../ ${cmake_args}")
     set(MAKE_CMD "make ${make_args}")
+
+    cmakeup_log("cmake_build" "params: ${src_dir_path} ${cmake_args} ${make_args}")
+    cmakeup_log("cmake_build" "Executing cmake cmd: ${CMAKE_CMD}") 
+    cmakeup_log("cmake_build" "Executing make cmd: ${MAKE_CMD}")
 
     execute_process(COMMAND mkdir -p ${src_dir_path}/build)
     execute_process(COMMAND cmake ../ ${cmake_args} WORKING_DIRECTORY ${src_dir_path}/build)
