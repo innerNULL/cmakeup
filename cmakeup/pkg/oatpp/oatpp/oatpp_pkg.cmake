@@ -34,9 +34,11 @@ endmacro(cmakeup_build_oatpp)
 
 
 macro(cmakeup_set_oatpp_lib_vars)
+    set(_src_root_path "${CMAKEUP_DEP_SRC_PATH}")
     set(_include_path "${CMAKEUP_DEP_SRC_PATH}/src")
     set(_static_lib_path "${CMAKEUP_DEP_SRC_PATH}/build/src/liboatpp.a")
     
+    cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path}) 
     #cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
     cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
     cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
