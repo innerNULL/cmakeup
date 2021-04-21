@@ -5,13 +5,21 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 
-set(_INSTALL_PATH "./install")
-set(_ORG "ARMmbed")
-set(_REPOSITORY "mbedtls")
-set(_BRANCH "master")
-set(_GITHUB_PROXY "global")
+macro(cmakeup_set_mbedtls_vars)
+    unset(_INSTALL_PATH)
+    unset(_ORG)
+    unset(_REPOSITORY)
+    unset(_BRANCH)
+    unset(_GITHUB_PROXY)
+    unset(_POSTFIX)
 
-set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
+    set(_INSTALL_PATH "./install")
+    set(_ORG "ARMmbed")
+    set(_REPOSITORY "mbedtls")
+    set(_BRANCH "master")
+    set(_GITHUB_PROXY "global")
+    set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
+endmacro(cmakeup_set_mbedtls_vars)
 
 
 macro(cmakeup_build_mbedtls)
@@ -40,6 +48,7 @@ endmacro(cmakeup_set_mbedtls_var)
 
 
 macro(integrate_mbedtls)
+    cmakeup_set_mbedtls_vars()
     cmakeup_build_mbedtls()
     cmakeup_set_mbedtls_var()
     include_directories(${CMAKEUP_INCLUDE_PATH_ARMmbed_mbedtls_master})
@@ -47,4 +56,4 @@ endmacro(integrate_mbedtls)
 
 
 integrate_mbedtls()
-#cmakeup_global_vars_printer()
+cmakeup_global_vars_printer()

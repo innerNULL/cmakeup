@@ -1,5 +1,5 @@
 # file: CMakeLists.txt
-# date: 2021-01-07
+# date: 2021-04-20
 
  
 cmake_minimum_required(VERSION 3.14)
@@ -13,11 +13,13 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 
 include(ExternalProject)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../module;${CMAKE_MODULE_PATH}")
-include(cmakeup)
-cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/") 
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}") 
+set(CMKAEUP_ROOT_PATH "${CMAKE_SOURCE_DIR}/../../../..")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
+include(cmakeup)
+cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
+cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
+cmakeup_pkg_cmake_importer("ARMmbed" "mbedtls")
 include(mbedtls_pkg)
 
 
