@@ -193,9 +193,15 @@ endmacro(cmakeup_cmake_build)
 # Register a packages related var(install/root path, header files' path, static/shared(dynamic lib path))
 # to global variables.
 macro(cmakeup_pkg_var_register var_type pkg_tag val)
+    unset(var_name)
     set(var_name ${var_type}_${pkg_tag})
     unset(${var_name} CACHE)
-    set(${var_name} ${val} CACHE STRING "")
+    # NOTE:
+    # Using following `set(${var_name} ${val} CACHE LIST "")` will cause obscure error, 
+    # since if `val` is a cmake `list`, than only first element will be used if not 
+    # adds `${ARGN}` arg in `set` macro.
+    #set(${var_name} ${val} CACHE LIST "")
+    set(${var_name} ${val} ${ARGN} CACHE LIST "")
     cmakeup_global_vars_recorder(${var_name})
     list(APPEND ${var_type} ${var_name})
 endmacro(cmakeup_pkg_var_register)

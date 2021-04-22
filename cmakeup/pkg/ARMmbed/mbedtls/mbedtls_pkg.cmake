@@ -39,8 +39,8 @@ macro(cmakeup_set_mbedtls_lib_vars)
     set(_include_path ${_lib_root_path}/include)
     
     set(_static_lib_path "${_lib_root_path}/lib/libmbedcrypto.a")
-    set(_static_lib_path "${_static_lib_path}\;${_lib_root_path}/lib/libmbedtls.a")
-    set(_static_lib_path "${_static_lib_path}\;${_lib_root_path}/lib/libmbedx509.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedtls.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedx509.a")
    
     cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path})
     cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
