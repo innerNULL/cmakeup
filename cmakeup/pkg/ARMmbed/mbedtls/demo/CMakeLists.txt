@@ -20,10 +20,14 @@ include(cmakeup)
 cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
 cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
 cmakeup_pkg_cmake_importer("ARMmbed" "mbedtls")
-include(mbedtls_pkg)
+#set(a "ARMmbed")
+#set(b "mbedtls")
+#include(${a}_${b}_pkg)
+integrate_ARMmbed_mbedtls("master" "./install" "global")
 
 
 cmakeup_global_vars_printer()
 set(DEMO ./demo.cpp)
 add_executable(demo ${DEMO})
 target_link_libraries(demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})
+

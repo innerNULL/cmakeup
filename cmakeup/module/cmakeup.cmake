@@ -49,6 +49,8 @@ macro(cmakeup_pkg_cmake_importer org respository)
     set(_target_cmake_module_root ${CMAKEUP_ROOT_PATH}/pkg/${org}/${respository})
     set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${_target_cmake_module_root}")
     cmakeup_log("cmakeup_pkg_cmake_importer" "Append ${_target_cmake_module_root} to CMAKE_MODULE_PATH.")
+    include(${org}_${respository}_pkg)
+    cmakeup_log("cmakeup_pkg_cmake_importer" "Included cmake script: ${org}_${respository}_pkg.cmake")
 endmacro(cmakeup_pkg_cmake_importer)
 
 
