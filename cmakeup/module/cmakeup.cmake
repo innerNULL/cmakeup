@@ -8,6 +8,15 @@ macro(cmakeup_log func_name log_str)
 endmacro(cmakeup_log)
 
 
+# cmakeup constant var setting
+macro(cmakeup_set_const_vars)
+    unset(CMAKEUP_MIN_CMAKE_VERSION CACHE)
+    set(CMAKEUP_MIN_CMAKE_VERSION "3.14" CACHE STRING "cmakeup minimum cmake version")
+    cmakeup_log("cmakeup_set_const_vars" "CMAKEUP_MIN_CMAKE_VERSION=${CMAKEUP_MIN_CMAKE_VERSION}")
+    cmakeup_global_vars_recorder(CMAKEUP_MIN_CMAKE_VERSION)
+endmacro(cmakeup_set_const_vars)
+
+
 # get current building absolute path
 macro(set_curr_path)
     execute_process(COMMAND pwd OUTPUT_VARIABLE CURR_PATH)
@@ -59,12 +68,15 @@ endmacro(cmakeup_pkg_cmake_importer)
 #     2. build some paths.
 macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     cmakeup_log("cmakeup_init" "Setting global vars.")
-    set_curr_path()
 
     # This is global var recorder
     unset(CMAKEUP_GLOBAL_VARS CACHE)
     set(CMAKEUP_GLOBAL_VARS CACHE LIST "cmakeup global vars")
     
+    # Init
+    set_curr_path()
+    cmakeup_set_const_vars()
+
     # Init cmakeup dependencies file root path
     unset(CMAKEUP_DEP_ROOT CACHE)
     set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
