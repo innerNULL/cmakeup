@@ -49,7 +49,7 @@ macro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
 endmacro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
 
 
-macro(integrate_ARMmbed_mbedtls branch install_dir github_proxy)
+macro(cmakeup_integrate_ARMmbed_mbedtls branch install_dir github_proxy)
     cmakeup_set_ARMmbed_mbedtls_vars(${branch} ${install_dir} ${github_proxy})
     cmakeup_build_ARMmbed_mbedtls()
     cmakeup_set_ARMmbed_mbedtls_lib_vars()
@@ -57,5 +57,5 @@ macro(integrate_ARMmbed_mbedtls branch install_dir github_proxy)
 
     include_directories(${CMAKEUP_INCLUDE_PATH_ARMmbed_mbedtls_master})
     cmakeup_log("integrate_ARMmbed_mbedtls" "Finished integrate ARMmbed_mbedtls")
-endmacro(integrate_ARMmbed_mbedtls)
+endmacro(cmakeup_integrate_ARMmbed_mbedtls)
 

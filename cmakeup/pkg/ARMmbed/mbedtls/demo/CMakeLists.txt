@@ -19,8 +19,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
 include(cmakeup)
 cmakeup_init("./_cmakeup_hub" "https://ghproxy.com/")
 cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
+
 cmakeup_pkg_cmake_importer("ARMmbed" "mbedtls")
-integrate_ARMmbed_mbedtls("master" "./install" "global")
+cmakeup_integrate_ARMmbed_mbedtls("master" "./install" "global")
 
 
 cmakeup_global_vars_printer()
