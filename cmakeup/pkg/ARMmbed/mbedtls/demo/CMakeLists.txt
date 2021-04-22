@@ -17,12 +17,9 @@ include(ExternalProject)
 set(CMKAEUP_ROOT_PATH "${CMAKE_SOURCE_DIR}/../../../..")
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
 include(cmakeup)
-cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
+cmakeup_init("./_cmakeup_hub" "https://ghproxy.com/")
 cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
 cmakeup_pkg_cmake_importer("ARMmbed" "mbedtls")
-#set(a "ARMmbed")
-#set(b "mbedtls")
-#include(${a}_${b}_pkg)
 integrate_ARMmbed_mbedtls("master" "./install" "global")
 
 
