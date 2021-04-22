@@ -42,7 +42,7 @@ macro(cmakeup_root_path_register cmakeup_root_path)
 endmacro(cmakeup_root_path_register)
 
 
-# one step certain cmakeup package's cmake script. Before executing this, 
+# One-step importing certain cmakeup package's cmake script. Before executing this, 
 # `cmakeup_root_path_register` should be executed.
 macro(cmakeup_pkg_cmake_importer org respository)
     unset(_target_cmake_module_root)
@@ -195,6 +195,7 @@ endmacro(cmakeup_cmake_build)
 macro(cmakeup_pkg_var_register var_type pkg_tag val)
     unset(var_name)
     set(var_name ${var_type}_${pkg_tag})
+    cmakeup_log("cmakeup_pkg_var_register" "Registering global var ${var_name}")
     unset(${var_name} CACHE)
     # NOTE:
     # Using following `set(${var_name} ${val} CACHE LIST "")` will cause obscure error, 
