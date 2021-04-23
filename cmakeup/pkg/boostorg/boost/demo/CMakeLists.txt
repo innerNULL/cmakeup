@@ -25,6 +25,6 @@ cmakeup_integrate_boostorg_boost("1.76.0" "./cmakeup_install" "none")
 
 
 cmakeup_global_vars_printer()
-set(DEMO ./demo.cpp)
-add_executable(demo ${DEMO})
-target_link_libraries(demo PUBLIC ${Boost_LIBRARIES}) 
+set(WS_CLIENT_DEMO ./ws_client_demo.cpp)
+add_executable(ws_client_demo ${WS_CLIENT_DEMO})
+target_link_libraries(ws_client_demo PUBLIC ${Boost_LIBRARIES}) 
