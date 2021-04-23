@@ -8,6 +8,15 @@ macro(cmakeup_log func_name log_str)
 endmacro(cmakeup_log)
 
 
+# cmakeup up log block splitter
+macro(cmakeup_log_blocker block_name block_stage)
+    unset(half_blocker_line)
+    set(half_blocker_line "##############################")
+    cmakeup_log("cmakeup_log_blocker" 
+        "${half_blocker_line}  ${block_name} ${block_stage}  ${half_blocker_line}")
+endmacro(cmakeup_log_blocker)
+
+
 # cmakeup constant var setting
 macro(cmakeup_set_const_vars)
     unset(CMAKEUP_MIN_CMAKE_VERSION CACHE)
@@ -35,11 +44,13 @@ endmacro(cmakeup_global_vars_recorder)
 
 # print all cmakeup caching global vars
 macro(cmakeup_global_vars_printer)
+    cmakeup_log_blocker("cmakeup_global_vars_printer" "STARTING")
     foreach(item ${CMAKEUP_GLOBAL_VARS})
         unset(curr_golbal_var_val)
         set(curr_golbal_var_val "${${item}}")
         cmakeup_log("cmakeup_global_vars_printer" "${item}: ${curr_golbal_var_val}")
     endforeach(item)
+    cmakeup_log_blocker("cmakeup_global_vars_printer" "FINISHED")
 endmacro(cmakeup_global_vars_printer)
 
 
@@ -67,6 +78,7 @@ endmacro(cmakeup_pkg_cmake_importer)
 #     1. define and init some global vars.
 #     2. build some paths.
 macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
+    cmakeup_log_blocker("cmakeup_init" "STARTING")
     cmakeup_log("cmakeup_init" "Setting global vars.")
 
     # This is global var recorder
@@ -120,6 +132,7 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
 
     cmakeup_global_vars_printer()
     cmakeup_log("cmakeup_init" "Finished setting global vars.")
+    cmakeup_log_blocker("cmakeup_init" "FINISHED") 
 endmacro(cmakeup_init)
 
 
@@ -157,12 +170,24 @@ macro(cmakeup_github_pkg_set org respository branch github_proxy)
 endmacro(cmakeup_github_pkg_set)
 
 
-macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
+macro(cmakeup_git_pkg_get_v0 target_url pkg_dep_root branch src_dir_name)
     if(EXISTS "${pkg_dep_root}/${branch}.zip")
         cmakeup_log("cmakeup_git_pkg_get" "Pkg zip file ${pkg_dep_root}/${branch}.zip already exists.")
     else()
         execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
+    endif()
+endmacro(cmakeup_git_pkg_get)
+
+
+macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
+    if(EXISTS "${pkg_dep_root}/_EXIST")
+        cmakeup_log("cmakeup_git_pkg_get" "Package file under ${pkg_dep_root} already exists.")
+    else()
+        execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
+        execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
+        execute_process(COMMAND touch ./_EXIST WORKING_DIRECTORY ${pkg_dep_root})
+        execute_process(COMMAND rm  ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
     endif()
 endmacro(cmakeup_git_pkg_get)
 
