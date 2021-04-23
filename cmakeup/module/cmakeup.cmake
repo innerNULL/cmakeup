@@ -89,6 +89,11 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     set_curr_path()
     cmakeup_set_const_vars()
 
+    # Init some cmake global var genertaed or re-defined by cmakeup
+    unset(CMAKEUP_CMAKE_GLOBAL_VARS CACHE)
+    set(CMAKEUP_CMAKE_GLOBAL_VARS CACHE LIST "cmakeup-defined cmake global vars.")
+    cmakeup_global_vars_recorder(CMAKEUP_CMAKE_GLOBAL_VARS)
+
     # Init cmakeup dependencies file root path
     unset(CMAKEUP_DEP_ROOT CACHE)
     set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
@@ -177,7 +182,7 @@ macro(cmakeup_git_pkg_get_v0 target_url pkg_dep_root branch src_dir_name)
         execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
     endif()
-endmacro(cmakeup_git_pkg_get)
+endmacro(cmakeup_git_pkg_get_v0)
 
 
 macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
