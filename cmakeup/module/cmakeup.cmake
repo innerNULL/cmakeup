@@ -137,10 +137,10 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     # Saving the name of vars that records certain package's installation directory, it that 
     # directory will contain the include-path of header files and static/shared(dynamic) libs.
     # Besides, the 'install' means stardard install by `make install`. 
-    unset(CMAKEUP_LIB_ROOT_DIR CACHE)
-    set(CMAKEUP_LIB_ROOT_DIR CACHE STRING 
+    unset(CMAKEUP_INSTALL_PATH CACHE)
+    set(CMAKEUP_INSTALL_PATH CACHE STRING 
         "Saving the name of vars that records certain lib installation dir. the 'install' means stardard install by `make install`")
-    cmakeup_global_vars_recorder(CMAKEUP_LIB_ROOT_DIR)
+    cmakeup_global_vars_recorder(CMAKEUP_INSTALL_PATH)
 
     # Init cmakeup integrated packages' bin file path.
     # For instance, when integrate some packages such as protobuff, we will not only i

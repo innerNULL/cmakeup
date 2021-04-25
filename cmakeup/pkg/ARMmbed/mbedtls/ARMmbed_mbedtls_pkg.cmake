@@ -32,16 +32,16 @@ endmacro(cmakeup_build_ARMmbed_mbedtls)
 
 macro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
     set(_src_root_path "${CMAKEUP_DEP_SRC_PATH}")
-    set(_lib_root_path "${CMAKEUP_DEP_SRC_PATH}/build/${_INSTALL_PATH}")
+    set(_lib_install_path "${CMAKEUP_DEP_SRC_PATH}/build/${_INSTALL_PATH}")
     
-    set(_include_path ${_lib_root_path}/include)
+    set(_include_path ${_lib_install_path}/include)
     
-    set(_static_lib_path "${_lib_root_path}/lib/libmbedcrypto.a")
-    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedtls.a")
-    set(_static_lib_path "${_static_lib_path};${_lib_root_path}/lib/libmbedx509.a")
+    set(_static_lib_path "${_lib_install_path}/lib/libmbedcrypto.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_install_path}/lib/libmbedtls.a")
+    set(_static_lib_path "${_static_lib_path};${_lib_install_path}/lib/libmbedx509.a")
    
     cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path})
-    cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
+    cmakeup_pkg_var_register(CMAKEUP_INSTALL_PATH ${_POSTFIX} ${_lib_install_path})
     cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
     cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
 endmacro(cmakeup_set_ARMmbed_mbedtls_lib_vars)

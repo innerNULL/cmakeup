@@ -28,7 +28,6 @@ macro(cmakeup_build_oatpp_oatpp)
     cmakeup_log("cmakeup_build_${_POSTFIX}" "Executing cmakeup_github_pkg_init.")
     cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_HOST})
     cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
-        #"-DOATPP_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKEUP_LIB_ROOT_DIR_${_POSTFIX}}"
         "-DOATPP_BUILD_TESTS=OFF"
         "-j8")
 endmacro(cmakeup_build_oatpp_oatpp)
@@ -40,7 +39,7 @@ macro(cmakeup_set_oatpp_oatpp_lib_vars)
     set(_static_lib_path "${CMAKEUP_DEP_SRC_PATH}/build/src/liboatpp.a")
     
     cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path}) 
-    #cmakeup_pkg_var_register(CMAKEUP_LIB_ROOT_DIR ${_POSTFIX} ${_lib_root_path})
+    #cmakeup_pkg_var_register(CMAKEUP_INSTALL_PATH ${_POSTFIX} ${_lib_install_path})
     cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
     cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
 endmacro(cmakeup_set_oatpp_oatpp_lib_vars)
