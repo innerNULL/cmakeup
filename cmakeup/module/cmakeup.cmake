@@ -98,10 +98,10 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
 
     # Init cmakeup dependencies file root path, all of the packages managed by cmakeup 
     # will be put under this path.
-    unset(CMAKEUP_DEP_ROOT CACHE)
-    set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
-    cmakeup_global_vars_recorder(CMAKEUP_DEP_ROOT)
-    execute_process(COMMAND mkdir -p ${CMAKEUP_DEP_ROOT})
+    unset(CMAKEUP_HUB_PATH CACHE)
+    set(CMAKEUP_HUB_PATH "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
+    cmakeup_global_vars_recorder(CMAKEUP_HUB_PATH)
+    execute_process(COMMAND mkdir -p ${CMAKEUP_HUB_PATH})
 
     # Init cmakeup github host
     unset(CMAKEUP_GITHUB_HOST CACHE)
@@ -174,7 +174,7 @@ macro(cmakeup_github_pkg_set org respository branch github_host)
     set(PROJ ${ORGANIZATION}/${RESPOSITORY})
     set(TARGET_URL "${GITHUB_HOST}/${PROJ}/archive/refs/heads/${BRANCH}.zip")
 
-    set(PKG_DEP_ROOT ${CMAKEUP_DEP_ROOT}/${ORGANIZATION}/${RESPOSITORY}/${BRANCH})
+    set(PKG_DEP_ROOT ${CMAKEUP_HUB_PATH}/${ORGANIZATION}/${RESPOSITORY}/${BRANCH})
     execute_process(COMMAND mkdir -p ${PKG_DEP_ROOT})
     cmakeup_log("cmakeup_github_pkg_set" "PKG_DEP_ROOT: ${PKG_DEP_ROOT}")
 

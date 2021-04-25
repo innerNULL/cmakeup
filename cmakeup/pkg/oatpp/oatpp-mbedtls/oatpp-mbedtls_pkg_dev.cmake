@@ -30,7 +30,7 @@ macro(cmakeup_get_oatpp_mbedtls_dep)
     
     #execute_process(COMMAND 
     #    bash -c "\
-    #    mkdir -p ${CMAKEUP_DEP_ROOT}/cmake && cd ${CMAKEUP_DEP_ROOT}/cmake && \
+    #    mkdir -p ${CMAKEUP_HUB_PATH}/cmake && cd ${CMAKEUP_HUB_PATH}/cmake && \
     #    wget https://raw.githubusercontent.com/oatpp/example-websocket/master/cmake/module/Findmbedtls.cmake\
     #    ")
     
@@ -43,7 +43,7 @@ macro(cmakeup_get_oatpp_mbedtls_dep)
     #    "${MBEDTLS_INCLUDE_DIR};${MBEDTLS_TLS_LIBRARY};${MBEDTLS_SSL_LIBRARY};${MBEDTLS_X509_LIBRARY};${MBEDTLS_CRYPTO_LIBRARY}")
     #set(MBEDTLS_VERSION "2.26.0")
 
-    #set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKEUP_DEP_ROOT}/cmake")
+    #set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKEUP_HUB_PATH}/cmake")
     #include(FindPkgConfig)  
     #include(Findmbedtls) 
     #find_package(mbedtls 2.16.0 REQUIRED)

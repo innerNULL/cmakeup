@@ -32,7 +32,7 @@ macro(cmakeup_boostorg_boost_pkg_get)
 
     unset(CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX})
     cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} 
-        ${CMAKEUP_DEP_ROOT}/${_ORG}/${_REPOSITORY}/${_TAG}/boost_${BOOSTORG_BOOST_FORMATTED_TAG})
+        ${CMAKEUP_HUB_PATH}/${_ORG}/${_REPOSITORY}/${_TAG}/boost_${BOOSTORG_BOOST_FORMATTED_TAG})
 
     unset(CMKAEUP_BOOSTORG_BOOST_URL)
     set(CMKAEUP_BOOSTORG_BOOST_URL 
