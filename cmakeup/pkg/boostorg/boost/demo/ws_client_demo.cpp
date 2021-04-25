@@ -51,31 +51,33 @@ int main(int argc, char** argv) {
     // Make the connection on the IP address we get from a lookup
     net::connect(ws.next_layer(), results.begin(), results.end());
 
-	// Set a decorator to change the User-Agent of the handshake
-	ws.set_option(websocket::stream_base::decorator(
-	  [](websocket::request_type& req) {
-	    req.set(http::field::user_agent,
-	        std::string(BOOST_BEAST_VERSION_STRING) + " websocket-client-coro");
-		}
+    // Set a decorator to change the User-Agent of the handshake
+    ws.set_option(websocket::stream_base::decorator(
+    [](websocket::request_type& req) {
+      req.set(http::field::user_agent,
+          std::string(BOOST_BEAST_VERSION_STRING) + " websocket-client-coro");
+      }
     ));
 
-	// Perform the websocket handshake
-	ws.handshake(host, "/");
+    // Perform the websocket handshake
+    ws.handshake(host, "/");
 
-	// Send the message
-	ws.write(net::buffer(std::string(text)));
+    // This buffer will hold the incoming message
+    beast::flat_buffer buffer;
 
-	// This buffer will hold the incoming message
-	beast::flat_buffer buffer;
+    for (int32_t i = 0; i < 8; ++i) {
+      // Send the message
+      ws.write(net::buffer(std::string(text) + ", numer " +std::to_string(i)));
 
-	// Read a message into our buffer
-	ws.read(buffer);
+      // Read a message into our buffer, after is has been cleared
+      buffer.clear();
+      ws.read(buffer);
 
-	// Close the WebSocket connection
-	ws.close(websocket::close_code::normal);
-
-    std::cout << "call ws api from 'ws://" << host << ":" << port << "', the response is: "<< std::endl;
-    std::cout << "\t" << beast::make_printable(buffer.data()) << std::endl;
+      std::cout << "call ws api from 'ws://" << host << ":" << port << "', the response is: "<< std::endl;
+      std::cout << "\t" << beast::make_printable(buffer.data()) << std::endl;
+    }
+    // Close the WebSocket connection
+    ws.close(websocket::close_code::normal);
   } catch(std::exception const& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return EXIT_FAILURE;
