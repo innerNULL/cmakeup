@@ -40,7 +40,7 @@ macro(cmakeup_boostorg_boost_pkg_get)
 
     execute_process(COMMAND bash -c "mkdir -p ${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}")
 
-    if(EXISTS "${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}/../_EXIST")
+    if(EXISTS "${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}/../_DOWNLOAD")
         cmakeup_log("cmakeup_boostorg_boost_pkg_get" 
             "Package file under ${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}/.. already exists.")
     else()
@@ -48,7 +48,7 @@ macro(cmakeup_boostorg_boost_pkg_get)
             cd ${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}/.. \
             && wget ${CMKAEUP_BOOSTORG_BOOST_URL} \
             && tar --bzip2 -xf ./boost_${BOOSTORG_BOOST_FORMATTED_TAG}.tar.bz2 \
-            && touch _EXIST \
+            && touch _DOWNLOAD \
             && rm ./boost_${BOOSTORG_BOOST_FORMATTED_TAG}.tar.bz2\
         ")
     endif()
