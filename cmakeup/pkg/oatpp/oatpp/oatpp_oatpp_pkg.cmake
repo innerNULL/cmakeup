@@ -6,19 +6,19 @@
 cmake_minimum_required(VERSION 3.14)
 
 
-macro(cmakeup_set_oatpp_oatpp_vars branch install_dir github_proxy)
+macro(cmakeup_set_oatpp_oatpp_vars branch install_dir github_host)
     unset(_INSTALL_PATH)
     unset(_ORG)
     unset(_REPOSITORY)
     unset(_BRANCH)
-    unset(_GITHUB_PROXY)
+    unset(_GITHUB_HOST)
     unset(_POSTFIX)
 
     set(_INSTALL_PATH "./install")
     set(_ORG "oatpp")
     set(_REPOSITORY "oatpp")
     set(_BRANCH ${branch})
-    set(_GITHUB_PROXY ${github_proxy})
+    set(_GITHUB_HOST ${github_host})
     set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
 endmacro(cmakeup_set_oatpp_oatpp_vars)
 
@@ -26,7 +26,7 @@ endmacro(cmakeup_set_oatpp_oatpp_vars)
 macro(cmakeup_build_oatpp_oatpp)
     cmakeup_log("cmakeup_build_${_POSTFIX}" "${_ORG} ${_REPOSITORY} ${_BRANCH}")
     cmakeup_log("cmakeup_build_${_POSTFIX}" "Executing cmakeup_github_pkg_init.")
-    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_PROXY})
+    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_HOST})
     cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
         #"-DOATPP_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKEUP_LIB_ROOT_DIR_${_POSTFIX}}"
         "-DOATPP_BUILD_TESTS=OFF"
@@ -46,8 +46,8 @@ macro(cmakeup_set_oatpp_oatpp_lib_vars)
 endmacro(cmakeup_set_oatpp_oatpp_lib_vars)
 
 
-macro(cmakeup_integrate_oatpp_oatpp branch install_dir github_proxy)
-    cmakeup_set_oatpp_oatpp_vars(${branch} ${install_dir} ${github_proxy})
+macro(cmakeup_integrate_oatpp_oatpp branch install_dir github_host)
+    cmakeup_set_oatpp_oatpp_vars(${branch} ${install_dir} ${github_host})
     cmakeup_build_oatpp_oatpp()
     cmakeup_set_oatpp_oatpp_lib_vars()
 

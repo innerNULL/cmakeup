@@ -77,7 +77,7 @@ endmacro(cmakeup_pkg_cmake_importer)
 # Initializing cmakeup env, includes:
 #     1. define and init some global vars.
 #     2. build some paths.
-macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
+macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     cmakeup_log_blocker("cmakeup_init" "STARTING")
     cmakeup_log("cmakeup_init" "Setting global vars.")
 
@@ -100,10 +100,10 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
     cmakeup_global_vars_recorder(CMAKEUP_DEP_ROOT)
     execute_process(COMMAND mkdir -p ${CMAKEUP_DEP_ROOT})
 
-    # Init cmakeup github proxy
-    unset(CMAKEUP_GITHUB_PROXY CACHE)
-    set(CMAKEUP_GITHUB_PROXY ${cmakeup_github_proxy} CACHE STRING "cmakeup github proxy")
-    cmakeup_global_vars_recorder(CMAKEUP_GITHUB_PROXY)
+    # Init cmakeup github host
+    unset(CMAKEUP_GITHUB_HOST CACHE)
+    set(CMAKEUP_GITHUB_HOST ${cmakeup_github_host} CACHE STRING "cmakeup github host")
+    cmakeup_global_vars_recorder(CMAKEUP_GITHUB_HOST)
 
     # Init cmakeup integrating package names.
     unset(CMAKEUP_INTEGRATE_PKG CACHE)
@@ -141,28 +141,23 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_proxy)
 endmacro(cmakeup_init)
 
 
-macro(cmakeup_github_pkg_set org respository branch github_proxy)
+macro(cmakeup_github_pkg_set org respository branch github_host)
     cmakeup_log("cmakeup_github_pkg_set" "Setting package.")
-
-    #set(BRANCH "master")
-    #set(ORGANIZATION "oatpp")
-    #set(RESPOSITORY "oatpp-mbedtls")
-    #set(GIT_PROXY "https://ghproxy.com/")
 
     set(ORGANIZATION ${org})
     set(RESPOSITORY ${respository})
     set(BRANCH ${branch})
 
-    if(${github_proxy} STREQUAL global)
-        set(GITHUB_PROXY ${CMAKEUP_GITHUB_PROXY})
-        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_PROXY with CMAKEUP_GITHUB_PROXY: ${GITHUB_PROXY}.")
+    if(${github_host} STREQUAL global)
+        set(GITHUB_HOST ${CMAKEUP_GITHUB_HOST})
+        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_HOST with CMAKEUP_GITHUB_HOST: ${GITHUB_HOST}.")
     else()
-        set(GITHUB_PROXY ${github_proxy})
-        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_PROXY as: ${GITHUB_PROXY}.") 
+        set(GITHUB_HOST ${github_host})
+        cmakeup_log("cmakeup_github_pkg_set" "Sets GITHUB_HOST as: ${GITHUB_HOST}.") 
     endif()
 
     set(PROJ ${ORGANIZATION}/${RESPOSITORY})
-    set(TARGET_URL "${GITHUB_PROXY}https://github.com/${PROJ}/archive/refs/heads/${BRANCH}.zip")
+    set(TARGET_URL "${GITHUB_HOST}/${PROJ}/archive/refs/heads/${BRANCH}.zip")
 
     set(PKG_DEP_ROOT ${CMAKEUP_DEP_ROOT}/${ORGANIZATION}/${RESPOSITORY}/${BRANCH})
     execute_process(COMMAND mkdir -p ${PKG_DEP_ROOT})
@@ -197,8 +192,8 @@ macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
 endmacro(cmakeup_git_pkg_get)
 
 
-macro(cmakeup_github_pkg_init org respository branch github_proxy)
-    cmakeup_github_pkg_set(${org} ${respository} ${branch} ${github_proxy})
+macro(cmakeup_github_pkg_init org respository branch github_host)
+    cmakeup_github_pkg_set(${org} ${respository} ${branch} ${github_host})
     cmakeup_git_pkg_get(${TARGET_URL} ${PKG_DEP_ROOT} ${BRANCH} ${CMAKEUP_DEP_SRC_FOLDER})
 endmacro(cmakeup_github_pkg_init)
 

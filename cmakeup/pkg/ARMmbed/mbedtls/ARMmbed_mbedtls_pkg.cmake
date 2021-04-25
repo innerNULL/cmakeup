@@ -5,30 +5,28 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 
-macro(cmakeup_set_ARMmbed_mbedtls_vars branch install_dir github_proxy)
+macro(cmakeup_set_ARMmbed_mbedtls_vars branch install_dir github_host)
     unset(_INSTALL_PATH)
     unset(_ORG)
     unset(_REPOSITORY)
     unset(_BRANCH)
-    unset(_GITHUB_PROXY)
+    unset(_GITHUB_HOST)
     unset(_POSTFIX)
 
     set(_INSTALL_PATH "${install_dir}")
     set(_ORG "ARMmbed")
     set(_REPOSITORY "mbedtls")
     set(_BRANCH "${branch}")
-    set(_GITHUB_PROXY "${github_proxy}")
+    set(_GITHUB_HOST "${github_host}")
     set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
 endmacro(cmakeup_set_ARMmbed_mbedtls_vars)
 
 
 macro(cmakeup_build_ARMmbed_mbedtls)
-    #cmakeup_init("./_cmakeup_dep" "https://ghproxy.com/")
-    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_PROXY})
+    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_HOST})
     cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
         "-DCMAKE_INSTALL_PREFIX:PATH=${_INSTALL_PATH}" 
         "install")
-
 endmacro(cmakeup_build_ARMmbed_mbedtls)
 
 
@@ -49,8 +47,8 @@ macro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
 endmacro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
 
 
-macro(cmakeup_integrate_ARMmbed_mbedtls branch install_dir github_proxy)
-    cmakeup_set_ARMmbed_mbedtls_vars(${branch} ${install_dir} ${github_proxy})
+macro(cmakeup_integrate_ARMmbed_mbedtls branch install_dir github_host)
+    cmakeup_set_ARMmbed_mbedtls_vars(${branch} ${install_dir} ${github_host})
     cmakeup_build_ARMmbed_mbedtls()
     cmakeup_set_ARMmbed_mbedtls_lib_vars()
     cmakeup_global_vars_printer()
