@@ -39,11 +39,14 @@ macro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
     set(_static_lib_path "${_lib_install_path}/lib/libmbedcrypto.a")
     set(_static_lib_path "${_static_lib_path};${_lib_install_path}/lib/libmbedtls.a")
     set(_static_lib_path "${_static_lib_path};${_lib_install_path}/lib/libmbedx509.a")
+
+    set(_bin_path "${_lib_install_path}/bin")
    
     cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path})
     cmakeup_pkg_var_register(CMAKEUP_INSTALL_PATH ${_POSTFIX} ${_lib_install_path})
     cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
     cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
+    cmakeup_pkg_var_register(CMAKEUP_BIN_PATH ${_POSTFIX} ${_bin_path})
 endmacro(cmakeup_set_ARMmbed_mbedtls_lib_vars)
 
 
