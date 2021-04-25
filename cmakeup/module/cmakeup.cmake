@@ -110,35 +110,35 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
 
     # Saving the name of the packages integrated by cmakeup.
     unset(CMAKEUP_INTEGRATE_PKG CACHE)
-    set(CMAKEUP_INTEGRATE_PKG CACHE STRING "cmakeup integrating packages names.")
+    set(CMAKEUP_INTEGRATE_PKG CACHE LIST "cmakeup integrating packages names.")
     cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG)
 
     # Saving the name of vars that records certain packages' root path that contain its 
     # downloading compressed files, decompressed src files, include files, lib files, etc.
     unset(CMAKEUP_INTEGRATE_PKG_ROOT CACHE)
-    set(CMAKEUP_INTEGRATE_PKG_ROOT  CACHE STRING "cmakeup pkg src code root path.")
+    set(CMAKEUP_INTEGRATE_PKG_ROOT CACHE LIST "cmakeup pkg src code root path.")
     cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG_ROOT)
 
     # Saving the name of vars that records certain packages' include path of header-files.
     unset(CMAKEUP_INCLUDE_PATH CACHE)
-    set(CMAKEUP_INCLUDE_PATH  CACHE STRING "header files' include path managed by cmakeup.")
+    set(CMAKEUP_INCLUDE_PATH CACHE LIST "header files' include path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_INCLUDE_PATH)
 
     # Saving the name of vars that records certain package's static lib after building. 
     unset(CMAKEUP_STATIC_LIB CACHE)
-    set(CMAKEUP_STATIC_LIB  CACHE STRING "static lib files path managed by cmakeup.")
+    set(CMAKEUP_STATIC_LIB CACHE LIST "static lib files path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_STATIC_LIB)
 
     # Saving the name of vars that records certain package's dynamic(shared) lib after building.
     unset(CMAKEUP_SHARED_LIB CACHE)
-    set(CMAKEUP_SHARED_LIB  CACHE STRING "shared/dynamic lib files path managed by cmakeup.")
+    set(CMAKEUP_SHARED_LIB CACHE LIST "shared/dynamic lib files path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_SHARED_LIB)
 
     # Saving the name of vars that records certain package's installation directory, it that 
     # directory will contain the include-path of header files and static/shared(dynamic) libs.
     # Besides, the 'install' means stardard install by `make install`. 
     unset(CMAKEUP_INSTALL_PATH CACHE)
-    set(CMAKEUP_INSTALL_PATH CACHE STRING 
+    set(CMAKEUP_INSTALL_PATH CACHE LIST 
         "Saving the name of vars that records certain lib installation dir. the 'install' means stardard install by `make install`")
     cmakeup_global_vars_recorder(CMAKEUP_INSTALL_PATH)
 
@@ -147,7 +147,7 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     # include header-files and static/dynamic lib, but also we need an protoc built bin 
     # to compile out `.proto` files.
     unset(CMAKEUP_BIN_PATH CACHE)
-    set(CMAKEUP_BIN_PATH CACHE STRING "Saving the name of vars that records certain package's built bin path.")
+    set(CMAKEUP_BIN_PATH CACHE LIST "Saving the name of vars that records certain package's built bin path.")
     cmakeup_global_vars_recorder(CMAKEUP_BIN_PATH)
 
     cmakeup_global_vars_printer()
