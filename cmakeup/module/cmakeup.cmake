@@ -81,7 +81,8 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     cmakeup_log_blocker("cmakeup_init" "STARTING")
     cmakeup_log("cmakeup_init" "Setting global vars.")
 
-    # This is global var recorder
+    # This is global var recorder, which will recored the name of every global vars
+    # defined or redefined by cmakeup.
     unset(CMAKEUP_GLOBAL_VARS CACHE)
     set(CMAKEUP_GLOBAL_VARS CACHE LIST "cmakeup global vars")
     
@@ -89,12 +90,14 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     set_curr_path()
     cmakeup_set_const_vars()
 
-    # Init some cmake global var genertaed or re-defined by cmakeup
+    # Recored any cmake-meaningufl global var's name defined or re-defined by cmakeup, 
+    # it should be a subset of `CMAKEUP_GLOBAL_VARS`.
     unset(CMAKEUP_CMAKE_GLOBAL_VARS CACHE)
     set(CMAKEUP_CMAKE_GLOBAL_VARS CACHE LIST "cmakeup-defined cmake global vars.")
     cmakeup_global_vars_recorder(CMAKEUP_CMAKE_GLOBAL_VARS)
 
-    # Init cmakeup dependencies file root path
+    # Init cmakeup dependencies file root path, all of the packages managed by cmakeup 
+    # will be put under this path.
     unset(CMAKEUP_DEP_ROOT CACHE)
     set(CMAKEUP_DEP_ROOT "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
     cmakeup_global_vars_recorder(CMAKEUP_DEP_ROOT)
@@ -105,35 +108,47 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     set(CMAKEUP_GITHUB_HOST ${cmakeup_github_host} CACHE STRING "cmakeup github host")
     cmakeup_global_vars_recorder(CMAKEUP_GITHUB_HOST)
 
-    # Init cmakeup integrating package names.
+    # Saving the name of the packages integrated by cmakeup.
     unset(CMAKEUP_INTEGRATE_PKG CACHE)
     set(CMAKEUP_INTEGRATE_PKG CACHE STRING "cmakeup integrating packages names.")
     cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG)
 
-    # Init cmakeup integrating package src paths.
+    # Saving the name of vars that records certain packages' root path that contain its 
+    # downloading compressed files, decompressed src files, include files, lib files, etc.
     unset(CMAKEUP_INTEGRATE_PKG_ROOT CACHE)
     set(CMAKEUP_INTEGRATE_PKG_ROOT  CACHE STRING "cmakeup pkg src code root path.")
     cmakeup_global_vars_recorder(CMAKEUP_INTEGRATE_PKG_ROOT)
 
-    # Init cmakeup integrated packages' header-file include path.
+    # Saving the name of vars that records certain packages' include path of header-files.
     unset(CMAKEUP_INCLUDE_PATH CACHE)
     set(CMAKEUP_INCLUDE_PATH  CACHE STRING "header files' include path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_INCLUDE_PATH)
 
-    # Init cmakeup integrated packages' static-lib path.
+    # Saving the name of vars that records certain package's static lib after building. 
     unset(CMAKEUP_STATIC_LIB CACHE)
     set(CMAKEUP_STATIC_LIB  CACHE STRING "static lib files path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_STATIC_LIB)
 
-    # Init cmakeup integrated packages' dynamic(shared)-lib path.
+    # Saving the name of vars that records certain package's dynamic(shared) lib after building.
     unset(CMAKEUP_SHARED_LIB CACHE)
     set(CMAKEUP_SHARED_LIB  CACHE STRING "shared/dynamic lib files path managed by cmakeup.")
     cmakeup_global_vars_recorder(CMAKEUP_SHARED_LIB)
 
-    # Init cmakeup integrated packages' installation(root) path.
+    # Saving the name of vars that records certain package's installation directory, it that 
+    # directory will contain the include-path of header files and static/shared(dynamic) libs.
+    # Besides, the 'install' means stardard install by `make install`. 
     unset(CMAKEUP_LIB_ROOT_DIR CACHE)
-    set(CMAKEUP_LIB_ROOT_DIR CACHE STRING "lib installe dir. the 'install' means stardard install by `make insatll`")
+    set(CMAKEUP_LIB_ROOT_DIR CACHE STRING 
+        "Saving the name of vars that records certain lib installation dir. the 'install' means stardard install by `make install`")
     cmakeup_global_vars_recorder(CMAKEUP_LIB_ROOT_DIR)
+
+    # Init cmakeup integrated packages' bin file path.
+    # For instance, when integrate some packages such as protobuff, we will not only i
+    # include header-files and static/dynamic lib, but also we need an protoc built bin 
+    # to compile out `.proto` files.
+    unset(CMAKEUP_BIN_PATH CACHE)
+    set(CMAKEUP_BIN_PATH CACHE STRING "Saving the name of vars that records certain package's built bin path.")
+    cmakeup_global_vars_recorder(CMAKEUP_BIN_PATH)
 
     cmakeup_global_vars_printer()
     cmakeup_log("cmakeup_init" "Finished setting global vars.")
