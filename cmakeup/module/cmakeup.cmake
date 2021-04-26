@@ -77,6 +77,8 @@ endmacro(cmakeup_pkg_cmake_importer)
 # Initializing cmakeup env, includes:
 #     1. define and init some global vars.
 #     2. build some paths.
+#
+# cmakeup_dep_path: The path of cmakeup_hub, this MUST BE absolute path.
 macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     cmakeup_log_blocker("cmakeup_init" "STARTING")
     cmakeup_log("cmakeup_init" "Setting global vars.")
@@ -99,7 +101,10 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     # Init cmakeup dependencies file root path, all of the packages managed by cmakeup 
     # will be put under this path.
     unset(CMAKEUP_HUB_PATH CACHE)
-    set(CMAKEUP_HUB_PATH "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
+    # Old Version:
+    # At that time. `${cmakeup_dep_path}` is the relative path of cmakeup_hub under current directory.
+    # set(CMAKEUP_HUB_PATH "${CURR_PATH}/${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
+    set(CMAKEUP_HUB_PATH "${cmakeup_dep_path}" CACHE STRING "cmakeup dep root path")
     cmakeup_global_vars_recorder(CMAKEUP_HUB_PATH)
     execute_process(COMMAND mkdir -p ${CMAKEUP_HUB_PATH})
 
