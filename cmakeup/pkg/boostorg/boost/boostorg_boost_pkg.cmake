@@ -92,6 +92,8 @@ macro(cmakeup_integrate_boostorg_boost tag install_dir github_proxy)
     find_package(Boost REQUIRED 
         chrono context filesystem graph iostreams locale log program_options regex serialization thread timer wave)
 
+    find_package(OpenSSL REQUIRED)
+
 	if(Boost_FOUND)
         cmakeup_log("cmakeup_integrate_boostorg_boost" "Successfully found boostorg/boost lib with `find_package`.")
         cmakeup_log("cmakeup_integrate_boostorg_boost" 

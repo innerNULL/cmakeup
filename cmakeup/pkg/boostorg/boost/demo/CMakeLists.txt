@@ -25,6 +25,14 @@ cmakeup_integrate_boostorg_boost("1.76.0" "./cmakeup_install" "none")
 
 
 cmakeup_global_vars_printer()
+
 set(WS_CLIENT_DEMO ./ws_client_demo.cpp)
 add_executable(ws_client_demo ${WS_CLIENT_DEMO})
-target_link_libraries(ws_client_demo PUBLIC ${Boost_LIBRARIES}) 
+target_link_libraries(ws_client_demo PUBLIC ${Boost_LIBRARIES})
+
+set(WSS_CLIENT_DEMO ../wss_client_demo.cpp)
+add_executable(wss_client_demo ${WSS_CLIENT_DEMO})
+# You can link boost by seperately ling `${Boost_LIBRARIES}` and its dependencies, 
+# such as openssl
+target_link_libraries(wss_client_demo PUBLIC ${Boost_LIBRARIES})
+target_link_libraries(wss_client_demo PUBLIC OpenSSL::SSL)
