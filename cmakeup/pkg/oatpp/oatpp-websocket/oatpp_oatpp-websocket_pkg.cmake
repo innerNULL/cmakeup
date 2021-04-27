@@ -1,0 +1,71 @@
+# file: oatpp_oatpp-websocket_pkg.cmake
+# date: 2021-04-27
+
+
+#cmake_minimum_required(VERSION ${CMAKEUP_MIN_CMAKE_VERSION})
+cmake_minimum_required(VERSION 3.14)
+
+
+macro(cmakeup_set_oatpp_oatpp_websocket_vars branch install_dir github_host)
+    unset(_INSTALL_PATH)
+    unset(_ORG)
+    unset(_REPOSITORY)
+    unset(_BRANCH)
+    unset(_GITHUB_HOST)
+    unset(_POSTFIX)
+
+    set(_INSTALL_PATH "./install")
+    set(_ORG "oatpp")
+    set(_REPOSITORY "oatpp-websocket")
+    set(_BRANCH ${branch})
+    set(_GITHUB_HOST ${github_host})
+    set(_POSTFIX ${_ORG}_${_REPOSITORY}_${_BRANCH})
+endmacro(cmakeup_set_oatpp_oatpp_websocket_vars)
+
+
+macro(cmakeup_build_oatpp_oatpp_websocket_deps)
+    # Integrate oatpp/oatpp
+    cmakeup_pkg_cmake_importer("oatpp" "oatpp")
+    cmakeup_integrate_oatpp_oatpp("master" "null" "global")
+    # Integrate ARMmbed/mbedtls
+    #cmakeup_pkg_cmake_importer("ARMmbed" "mbedtls")
+    #cmakeup_integrate_ARMmbed_mbedtls("master" "./install" "global")
+    # Integrate oatpp/oatpp-mbedtls
+    cmakeup_pkg_cmake_importer("oatpp" "oatpp-mbedtls") 
+    cmakeup_integrate_oatpp_oatpp_mbedtls("master" "null" "global")
+endmacro(cmakeup_build_oatpp_oatpp_websocket_deps)
+
+
+macro(cmakeup_build_oatpp_oatpp_websocket)
+    cmakeup_log("cmakeup_build_${_POSTFIX}" "${_ORG} ${_REPOSITORY} ${_BRANCH}")
+    cmakeup_log("cmakeup_build_${_POSTFIX}" "Executing cmakeup_github_pkg_init.")
+    cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_HOST})
+    # cmake ../ -D OATPP_MODULES_LOCATION=EXTERNAL -D OATPP_EXTERNAL_SOURCE=URL
+    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} 
+        "-D OATPP_MODULES_LOCATION=EXTERNAL -D OATPP_EXTERNAL_SOURCE=URL"
+        "-j8")
+endmacro(cmakeup_build_oatpp_oatpp_websocket)
+
+
+macro(cmakeup_set_oatpp_oatpp_websocket_lib_vars)
+    set(_src_root_path "${CMAKEUP_DEP_SRC_PATH}")
+    set(_include_path "${CMAKEUP_DEP_SRC_PATH}/src")
+    set(_static_lib_path "${CMAKEUP_DEP_SRC_PATH}/build/src/liboatpp-websocket.a")
+    
+    cmakeup_pkg_var_register(CMAKEUP_INTEGRATE_PKG_ROOT ${_POSTFIX} ${_src_root_path}) 
+    #cmakeup_pkg_var_register(CMAKEUP_INSTALL_PATH ${_POSTFIX} ${_lib_install_path})
+    cmakeup_pkg_var_register(CMAKEUP_INCLUDE_PATH ${_POSTFIX} ${_include_path})
+    cmakeup_pkg_var_register(CMAKEUP_STATIC_LIB ${_POSTFIX} ${_static_lib_path})
+endmacro(cmakeup_set_oatpp_oatpp_websocket_lib_vars)
+
+
+macro(cmakeup_integrate_oatpp_oatpp_websocket branch install_dir github_host)
+    cmakeup_build_oatpp_oatpp_websocket_deps() 
+    cmakeup_set_oatpp_oatpp_websocket_vars(${branch} ${install_dir} ${github_host})
+    cmakeup_build_oatpp_oatpp_websocket()
+    cmakeup_set_oatpp_oatpp_websocket_lib_vars()
+
+    cmakeup_global_vars_printer()
+    include_directories(${CMAKEUP_INCLUDE_PATH_oatpp_oatpp-websocket_master})
+endmacro(cmakeup_integrate_oatpp_oatpp_websocket)
+

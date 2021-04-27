@@ -13,14 +13,31 @@ set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
 
 include(ExternalProject)
-#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_MODULE_PATH}")
-include(oatpp-websocket_pkg) 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../oatpp-mbedtls/;${CMAKE_MODULE_PATH}")
-include(oatpp-mbedtls_pkg)
+
+set(CMKAEUP_ROOT_PATH "${CMAKE_SOURCE_DIR}/../../../..")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
+include(cmakeup)
+cmakeup_init("${CMAKE_CURRENT_SOURCE_DIR}/build/_cmakeup_hub" "https://ghproxy.com/https://github.com")
+#cmakeup_init("./_cmakeup_hub" "https://ghproxy.com/https://github.com")     
+cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
+
+cmakeup_pkg_cmake_importer("oatpp" "oatpp-websocket")
+cmakeup_integrate_oatpp_oatpp_websocket("master" "null" "global" "full")
 
 
-set(DEMO ./demo.cpp)
-add_executable(demo ${DEMO})
-target_link_libraries(demo PUBLIC ${oatpp-websocket_lib})
-target_link_libraries(demo PUBLIC ${oatpp-mbedtls_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)
+set(ECHO_WS_DEMO ./echo_ws_demo.cpp)
+add_executable(echo_ws_demo ${ECHO_WS_DEMO})
+target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master})
+target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}) 
+target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master})
+target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})
+
+
+set(ALPACA_WSS_DEMO ./alpaca_wss_demo.cpp)
+add_executable(alpaca_wss_demo ${ALPACA_WSS_DEMO})
+target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master})
+target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}) 
+target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master})
+target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})
+#target_link_libraries(alpaca_wss_demo PUBLIC ${oatpp-mbedtls_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)
+
