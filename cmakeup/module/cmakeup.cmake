@@ -206,8 +206,16 @@ macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
     else()
         execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
-        execute_process(COMMAND touch ./_DOWNLOAD WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND rm  ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
+        # NOTE:
+        # The reason of following line is: GITHUB's naming policy sucks! For example, downloading
+        # zip file from gabime/spdlog's v1.x branch, the name of zip file is spdlog-v1.x.zip, and 
+        # the decompressed folder named spdlog-1.x, where is the lossing 'v'??? but for master branch, 
+        # the zip file called spdlog-master.zip, and the decompressed folder names spdlog-master.
+        # So we needs manually unify the naming rule.   
+        cmakeup_log("cmakeup_git_pkg_get" "Renaming code folder to ${src_dir_name}.")
+        execute_process(COMMAND bash -c "cd ${pkg_dep_root} && mv ./* ./${src_dir_name}")
+        execute_process(COMMAND touch ./_DOWNLOAD WORKING_DIRECTORY ${pkg_dep_root})
     endif()
 endmacro(cmakeup_git_pkg_get)
 
@@ -229,7 +237,12 @@ macro(cmakeup_cmake_build src_dir_path cmake_args make_args)
     cmakeup_log("cmake_build" "Executing make cmd: ${MAKE_CMD}")
     cmakeup_log("cmake_build" "Working dir: ${src_dir_path}/build")
 
-    execute_process(COMMAND mkdir -p ${src_dir_path}/build)
+    # NOTE:
+    # The reason not directly build `${src_dir_path}/build`, if `${src_dir_path}` 
+    # does not exist, there must be sth wrong, so only build `./build` is helpful 
+    # for debug.
+    #execute_process(COMMAND mkdir -p ${src_dir_path}/build)
+    execute_process(COMMAND bash -c "cd ${src_dir_path} && mkdir -p build")
     
     # NOTE: CMAKE IS TOO STRANGE!!!
     # That the following line will not work, since `${cmake_args}` can not correctly 
