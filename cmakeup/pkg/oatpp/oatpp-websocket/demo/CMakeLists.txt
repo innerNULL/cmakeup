@@ -27,17 +27,23 @@ cmakeup_integrate_oatpp_oatpp_websocket("master" "null" "global" "full")
 
 set(ECHO_WS_DEMO ./echo_ws_demo.cpp)
 add_executable(echo_ws_demo ${ECHO_WS_DEMO})
-target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master})
-target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}) 
-target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master})
-target_link_libraries(echo_ws_demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})
+target_link_libraries(echo_ws_demo 
+    PUBLIC -Wl,--start-group 
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master}
+    PUBLIC -Wl,--end-group
+)
 
 
 set(ALPACA_WSS_DEMO ./alpaca_wss_demo.cpp)
 add_executable(alpaca_wss_demo ${ALPACA_WSS_DEMO})
-target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master})
-target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}) 
-target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master})
-target_link_libraries(alpaca_wss_demo PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master})
-#target_link_libraries(alpaca_wss_demo PUBLIC ${oatpp-mbedtls_lib} mbedtls::TLS mbedtls::X509 mbedtls::Crypto)
-
+target_link_libraries(alpaca_wss_demo  
+    PUBLIC -Wl,--start-group 
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-websocket_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_oatpp_oatpp-mbedtls_master}
+    PUBLIC ${CMAKEUP_STATIC_LIB_ARMmbed_mbedtls_master}
+    PUBLIC -Wl,--end-group
+)
