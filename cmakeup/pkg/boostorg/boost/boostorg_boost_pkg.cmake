@@ -23,6 +23,7 @@ endmacro(cmakeup_set_boostorg_boost_vars)
 
 
 # URL example: https://dl.bintray.com/boostorg/release/1.76.0/source/boost_1_76_0.tar.bz2
+# URL example: https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
 macro(cmakeup_boostorg_boost_pkg_get)
     # Set a formatted tag, convert 1.76.0 to 1_76_0
     unset(BOOSTORG_BOOST_FORMATTED_TAG)
@@ -36,7 +37,7 @@ macro(cmakeup_boostorg_boost_pkg_get)
 
     unset(CMKAEUP_BOOSTORG_BOOST_URL)
     set(CMKAEUP_BOOSTORG_BOOST_URL 
-        "https://dl.bintray.com/boostorg/release/${_TAG}/source/boost_${BOOSTORG_BOOST_FORMATTED_TAG}.tar.bz2")
+        "https://boostorg.jfrog.io/artifactory/main/release/${_TAG}/source/boost_${BOOSTORG_BOOST_FORMATTED_TAG}.tar.bz2")
 
     execute_process(COMMAND bash -c "mkdir -p ${CMAKEUP_INTEGRATE_PKG_ROOT_${_POSTFIX}}")
 
