@@ -50,6 +50,7 @@ macro(cmakeup_integrate_yhirose_cpp_httplib branch install_dir github_host)
     cmakeup_set_yhirose_cpp_httplib_lib_vars()
 
     cmakeup_global_vars_printer()
+    find_package(OpenSSL REQUIRED)
     include_directories(${_lib_include_path})
 endmacro(cmakeup_integrate_yhirose_cpp_httplib)
 

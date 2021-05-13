@@ -27,4 +27,4 @@ cmakeup_integrate_yhirose_cpp_httplib("master" "null" "global")
 cmakeup_global_vars_printer()
 set(HTTPS_SERVER_EXAMPLE ./https_server_example.cpp)
 add_executable(https_server_example ${HTTPS_SERVER_EXAMPLE})
-
+target_link_libraries(https_server_example PUBLIC OpenSSL::SSL) 
