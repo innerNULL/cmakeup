@@ -113,6 +113,12 @@ macro(cmakeup_init cmakeup_dep_path cmakeup_github_host)
     set(CMAKEUP_GITHUB_HOST ${cmakeup_github_host} CACHE STRING "cmakeup github host")
     cmakeup_global_vars_recorder(CMAKEUP_GITHUB_HOST)
 
+    # Init cmakeup gitlab host
+    # TODO@202106011721: For now we do not needs customizing gitlab host.
+    unset(CMAKEUP_GITLAB_HOST CACHE)
+    set(CMAKEUP_GITLAB_HOST "https://gitlab.com" CACHE STRING "cmakeup gitlab host")
+    cmakeup_global_vars_recorder(CMAKEUP_GITLAB_HOST)
+
     # Saving the name of the packages integrated by cmakeup.
     unset(CMAKEUP_INTEGRATE_PKG CACHE)
     set(CMAKEUP_INTEGRATE_PKG CACHE LIST "cmakeup integrating packages names.")
@@ -190,21 +196,55 @@ macro(cmakeup_github_pkg_set org respository branch github_host)
 endmacro(cmakeup_github_pkg_set)
 
 
-macro(cmakeup_git_pkg_get_v0 target_url pkg_dep_root branch src_dir_name)
-    if(EXISTS "${pkg_dep_root}/${branch}.zip")
-        cmakeup_log("cmakeup_git_pkg_get" "Pkg zip file ${pkg_dep_root}/${branch}.zip already exists.")
+# TODO@202106011646:
+# Here we have a `cmakeup_gitlab_pkg_set` and a `cmakeup_github_pkg_set`, 
+# but they are almost same except url template, so maybe I can find an 
+# elegant way to improve code-reuse at this point.
+macro(cmakeup_gitlab_pkg_set org respository branch gitlab_host)
+    cmakeup_log("cmakeup_gitlab_pkg_set" "Setting package.")
+
+    set(ORGANIZATION ${org})
+    set(RESPOSITORY ${respository})
+    set(BRANCH ${branch})
+
+    if(${gitlab_host} STREQUAL global)
+        set(GITLAB_HOST ${CMAKEUP_GITLAB_HOST})
+        cmakeup_log("cmakeup_gitlab_pkg_set" "Sets GITLAB_HOST with CMAKEUP_GITLAB_HOST: ${GITLAB_HOST}.")
     else()
-        execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
-        execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
+        set(GITLAB_HOST ${gitlab_host})
+        cmakeup_log("cmakeup_gitlab_pkg_set" "Sets GITLAB_HOST as: ${GITLAB_HOST}.") 
     endif()
-endmacro(cmakeup_git_pkg_get_v0)
+
+    set(PROJ ${ORGANIZATION}/${RESPOSITORY})
+    set(TARGET_URL "${GITLAB_HOST}/${PROJ}/-/archive/${BRANCH}/${RESPOSITORY}-${BRANCH}.zip")
+
+    set(PKG_DEP_ROOT ${CMAKEUP_HUB_PATH}/${ORGANIZATION}/${RESPOSITORY}/${BRANCH})
+    execute_process(COMMAND mkdir -p ${PKG_DEP_ROOT})
+    cmakeup_log("cmakeup_gitlab_pkg_set" "PKG_DEP_ROOT: ${PKG_DEP_ROOT}")
+
+    set(CMAKEUP_DEP_SRC_FOLDER ${RESPOSITORY}-${BRANCH})
+    set(CMAKEUP_DEP_SRC_PATH ${PKG_DEP_ROOT}/${CMAKEUP_DEP_SRC_FOLDER})
+
+    cmakeup_log("cmakeup_gitlab_pkg_set" "Finished setting package: ${TARGET_URL}")
+endmacro(cmakeup_gitlab_pkg_set)
+
+
+
+#macro(cmakeup_git_pkg_get_v0 target_url pkg_dep_root branch src_dir_name)
+#    if(EXISTS "${pkg_dep_root}/${branch}.zip")
+#        cmakeup_log("cmakeup_git_pkg_get" "Pkg zip file ${pkg_dep_root}/${branch}.zip already exists.")
+#    else()
+#        execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
+#        execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
+#    endif()
+#endmacro(cmakeup_git_pkg_get_v0)
 
 
 macro(cmakeup_git_pkg_get target_url pkg_dep_root branch src_dir_name)
     if(EXISTS "${pkg_dep_root}/_DOWNLOAD")
         cmakeup_log("cmakeup_git_pkg_get" "Package file under ${pkg_dep_root} already exists.")
     else()
-        execute_process(COMMAND wget ${target_url} WORKING_DIRECTORY ${pkg_dep_root})
+        execute_process(COMMAND bash -c "cd ${pkg_dep_root} && wget ${target_url} --output-document ${BRANCH}.zip")
         execute_process(COMMAND unzip ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
         execute_process(COMMAND rm  ${BRANCH}.zip WORKING_DIRECTORY ${pkg_dep_root})
         # NOTE:
@@ -222,6 +262,13 @@ endmacro(cmakeup_git_pkg_get)
 
 macro(cmakeup_github_pkg_init org respository branch github_host)
     cmakeup_github_pkg_set(${org} ${respository} ${branch} ${github_host})
+    cmakeup_git_pkg_get(${TARGET_URL} ${PKG_DEP_ROOT} ${BRANCH} ${CMAKEUP_DEP_SRC_FOLDER})
+endmacro(cmakeup_github_pkg_init)
+
+
+# TODO@202106011650: Ref to TODO@202106011646. 
+macro(cmakeup_gitlab_pkg_init org respository branch gitlab_host)
+    cmakeup_gitlab_pkg_set(${org} ${respository} ${branch} ${gitlab_host})
     cmakeup_git_pkg_get(${TARGET_URL} ${PKG_DEP_ROOT} ${BRANCH} ${CMAKEUP_DEP_SRC_FOLDER})
 endmacro(cmakeup_github_pkg_init)
 
