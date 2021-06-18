@@ -165,3 +165,4 @@ TODO
 * **[oatpp/oatpp](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/oatpp/oatpp)**
 * **[whoshuu/cpr](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/whoshuu/cpr)**
 * **[yhirose/cpp-httplib](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/yhirose/cpp-httplib)**
+* **[pytorch/pytorch](https://github.com/innerNULL/cmakeup/tree/main/cmakeup/pkg/pytorch/pytorch)**
