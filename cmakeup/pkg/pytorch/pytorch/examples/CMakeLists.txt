@@ -21,10 +21,11 @@ cmakeup_init("${CMAKE_CURRENT_SOURCE_DIR}/build/_cmakeup_hub" "https://ghproxy.c
 cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
 
 cmakeup_pkg_cmake_importer("pytorch" "pytorch")
-cmakeup_integrate_pytorch_pytorch("1.9.0" "null" "global" "cpu")
-
+#cmakeup_integrate_pytorch_pytorch("1.9.0" "null" "global" "cpu")
+cmakeup_integrate_pytorch_pytorch("1.9.0" "null" "global" "cu102")
 
 cmakeup_global_vars_printer()
-set(EXAMPLE ./example.cpp)
-add_executable(example ${EXAMPLE})
-target_link_libraries(example "${TORCH_LIBRARIES}")
+
+set(MNIST ./mnist.cpp)
+add_executable(mnist ${MNIST})
+target_link_libraries(mnist "${TORCH_LIBRARIES}")
