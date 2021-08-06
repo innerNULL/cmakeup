@@ -26,6 +26,42 @@ The author is a naive and junior cpp coder. For now, **this project is still in 
 * Has cmake installed with version upper than 3.14
 * Has basic knowledge with cmake and linux shell
 
+## How To Use cmakeup in CMakeLists.txt
+Just paste following codes block into your CMakeLists.txt
+```
+# Download cmakeup as pkg management.
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/main.zip")
+    message(STATUS "cmakeup has been downloaded.")
+else()
+    execute_process(
+        COMMAND wget https://ghproxy.com/https://github.com/innerNULL/cmakeup/archive/refs/heads/main.zip
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+    execute_process(
+        COMMAND unzip main.zip WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+endif()
+set(CMKAEUP_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build/cmakeup-main/cmakeup")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMKAEUP_ROOT_PATH}/module")
+include(cmakeup)
+cmakeup_init("${CMAKE_CURRENT_SOURCE_DIR}/build/_cmakeup_hub" "https://ghproxy.com/https://github.com")
+cmakeup_root_path_register(${CMKAEUP_ROOT_PATH})
+include(vcpkg_helpers)
+
+integrate_vcpkg(
+    "https://ghproxy.com/https://github.com/microsoft/vcpkg/archive/refs/heads/master.zip"  
+    "${CMAKE_CURRENT_SOURCE_DIR}/build"
+)
+```
+and then, if you want integrate an vcpkg pakcage, using sqlite3 as example, adds following codes in CMakeLists.txt: 
+```
+execute_process(COMMAND bash -c "${CMAKEUP_VCPKG_BIN} install sqlite3")
+```
+else if you want integrate an package with cmakeup supported modules, using abseil-cpp as example:
+```
+cmakeup_pkg_cmake_importer("abseil" "abseil-cpp")
+cmakeup_integrate_abseil_abseil_cpp("master" "null" "global")
+```
+
+Note, in most case, when you using cmakeup-integration, you may use the integration module written by yourself, so the arguments may not always be same with above style.
 
 ## Notion
 * **Cmakeup-Package**: 
