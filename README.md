@@ -54,6 +54,7 @@ integrate_vcpkg(
 and then, if you want integrate an vcpkg pakcage, using sqlite3 as example, adds following codes in CMakeLists.txt: 
 ```
 execute_process(COMMAND bash -c "${CMAKEUP_VCPKG_BIN} install sqlite3")
+find_package(unofficial-sqlite3 CONFIG REQUIRED)
 ```
 else if you want integrate an package with cmakeup supported modules, using abseil-cpp as example:
 ```
