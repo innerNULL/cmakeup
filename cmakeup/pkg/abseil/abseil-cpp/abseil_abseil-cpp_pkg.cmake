@@ -27,7 +27,7 @@ macro(cmakeup_build_abseil_abseil_cpp)
     cmakeup_log("cmakeup_build_${_POSTFIX}" "${_ORG} ${_REPOSITORY} ${_BRANCH}")
     cmakeup_log("cmakeup_build_${_POSTFIX}" "Executing cmakeup_github_pkg_init.")
     cmakeup_github_pkg_init(${_ORG} ${_REPOSITORY} ${_BRANCH} ${_GITHUB_HOST})
-    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} "-DCMAKE_CXX_STANDARD=11 -DCMAKE_INSTALL_PREFIX=./install" "install")
+    cmakeup_cmake_build(${CMAKEUP_DEP_SRC_PATH} "-DCMAKE_CXX_STANDARD=11 -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_CXX_FLAGS=-fPIC" "install")
 endmacro(cmakeup_build_abseil_abseil_cpp)
 
 
