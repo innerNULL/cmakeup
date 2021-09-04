@@ -38,7 +38,7 @@ if(EXISTS "${CURR_DIR}/main.zip")
     message(STATUS "cmakeup has been downloaded.")
 else()
     execute_process(
-        COMMAND wget https://ghproxy.com/https://github.com/innerNULL/cmakeup/archive/refs/heads/main.zip
+        COMMAND bash -c "wget https://ghproxy.com/https://github.com/innerNULL/cmakeup/archive/refs/heads/main.zip"
         WORKING_DIRECTORY ${CURR_DIR})
     execute_process(
         COMMAND unzip main.zip WORKING_DIRECTORY ${CURR_DIR})
